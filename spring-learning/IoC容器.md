@@ -16,6 +16,7 @@ WebApplicationContext 接口：为了在 Web 环境使用而设计，WebApplicat
     d.在 BeanDefinition 中通过 init-method 属性指定了初始化方法，则执行（注意该方法如果和 “afterPropertiesSet” 同名则不执行，如果 “afterPropertiesSet” 抛出异常时 init-method 也会不执行）
     e.执行 BeanPostProcessor 的 postProcessAfterInitialization方法；
     ```
+![流程图](images/init.png)
 
 2. aware 接口
 
