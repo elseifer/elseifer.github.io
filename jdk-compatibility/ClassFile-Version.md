@@ -101,11 +101,13 @@ javap -v Convertable.class
 
 # Build-Jdk、-target、major 的区别与联系
 
-Build-Jdk：MANIFEST.MF 中说明 maven 运行时 jdk 版本，取值为 java.version（默认 1.8），不影响 class 文件格式的版本。
+Build-Jdk：MANIFEST.MF 中说明启动 maven 运行时的 jdk 版本，值为 java.version，不影响 class 文件格式的版本。
 
 -source、-target：是 javac 命令的 options，maven 可以将 -source、 -target 传递给 javac，影响 class 文件格式的版本。
 
-major、minor：class 文件格式版本，如果超过 JVM 支持范围，JVM 加载 class 文件时抛出 UnsupportedClassVersionError 错误。
+major、minor：class 文件格式版本，如果超过 JVM 支持范围，JVM 在加载 class 文件时将抛出 UnsupportedClassVersionError 错误。
+
+关于 maven pom 中 java.version、-source&-target 讨论可参考 [specifying java version in maven](https://stackoverflow.com/questions/38882080/specifying-java-version-in-maven-differences-between-properties-and-compiler-p)
 
 如果源代码中使用了高版本 jdk 特性，通过 -source、-target 指定低版本来编译代码，可能产生 JDK 兼容性问题，详见 [JDK 兼容性](./JDK-Compatibility.md)
 
