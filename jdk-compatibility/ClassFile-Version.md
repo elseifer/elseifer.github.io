@@ -48,8 +48,8 @@ or configure the plugin directly:
     <artifactId>maven-compiler-plugin</artifactId>
     <version>3.6.0</version>
     <configuration>
-        <source>1.6</source>
-        <target>1.6</target>
+        <source>1.8</source>
+        <target>1.8</target>
     </configuration>
 </plugin>
 ```
@@ -84,7 +84,7 @@ major、minor 共同决定了 class 文件格式的版本，对于给定的 majo
 
 3. javap
 
-java 自带的 javap 反编译工具可以查看 class 文件。
+可以使用 JDK 的 javap 反编译工具查看 class 文件格式版本<sup>[8]</sup>。
 
 javap -v Convertable.class
 
@@ -94,16 +94,16 @@ javap -v Convertable.class
 
 | /    |  major | jdk  |
 | :--: |  :--:  | :--: |
-| 版本  |  52    | 1.8  |
-| 版本  |  51    | 1.7  |
-| 版本  |  50    | 1.6  |
-| 版本  |  49    | 1.5  |
+| 版本  |  52    |  8  |
+| 版本  |  51    |  7  |
+| 版本  |  50    |  6  |
+| 版本  |  49    |  5  |
 
 # Build-Jdk、-target、major 的区别与联系
 
 Build-Jdk：MANIFEST.MF 中说明启动 maven 运行时的 jdk 版本，值为 java.version，不影响 class 文件格式的版本。
 
--source、-target：是 javac 命令的 options，maven 可以将 -source、 -target 传递给 javac，影响 class 文件格式的版本。
+-source、-target：是 javac 命令的选项，maven 可以将 -source、 -target 传递给 javac，影响 class 文件格式的版本。
 
 major、minor：class 文件格式版本，如果超过 JVM 支持范围，JVM 在加载 class 文件时将抛出 UnsupportedClassVersionError 错误。
 
@@ -126,3 +126,5 @@ major、minor：class 文件格式版本，如果超过 JVM 支持范围，JVM �
 6.[Standard Options for javac](https://docs.oracle.com/javase/9/tools/javac.htm#GUID-AEEC9F07-CB49-4E96-8BC7-BCC2C7F725C9__STANDARDOPTIONSFORJAVAC-7D3D9CC2)
 
 7.[Java class file](https://en.wikipedia.org/wiki/Java_class_file)
+
+8.[Determining the Java version used to compile a class](https://fabianlee.org/2018/01/19/java-determining-the-java-version-used-to-compile-a-class-class-file-has-the-wrong-version/)
