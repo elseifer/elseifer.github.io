@@ -34,14 +34,15 @@ Oracle 提供了 Java 兼容性指导手册，如 *[Compatibility Guide for JDK 
 
 ## 二、Java 兼容性的若干案例 
 
-下面创建一个示例工程 [compatibility-demo](https://github.com/elseifer/compatibility-demo.git) 演示 Java 兼容性，本文涉及的基本软件环境为 JDK8 和 Maven 3.6.3，同时会依据需要调整代码运行时 JDK 为 6/7/8/14 版本。 
+下面创建一个示例工程 [compatibility-demo](https://github.com/elseifer/compatibility-demo.git) 演示 Java 兼容性，本文涉及的基本软件环境为 JDK8 和 Maven 3.6.3，同时会依据需要调整代码运行时 JDK 为 6/7/8/14 版本。
+
 ![Maven 和 JDK 环境](./images/env.jpg)
 
 ### 2.1 源码兼容性
 
 Java 编译器的工作包括将抽象的名称映射到具体的名称，把源代码中出现的简单的限定名映射为 class 文件中的二进制名称，源代码兼容性涉及源代码到 class 文件的映射，不仅包括这种映射是否可能，而且还包括生成的 class 文件是否合适。在编译期间添加新类、现有的类添加重载方法都会对的源代码兼容性产生影响。
 
-这里演示 Java 版本升级对 Java 应用源码的影响，构造1个场景：
+这里演示 Java 版本升级对 Java 应用源码的影响，构造两个场景：
 + JDK7 开发的代码在 Java8 下编译失败；
 + JDK6 开发的代码在 Java8 下编译成功，但是程序运行异常，需要对源代码进行修改；
 
@@ -51,7 +52,7 @@ Java 编译器的工作包括将抽象的名称映射到具体的名称，把源
 ### javac 的不兼容
 如下代码：
 ```java
-public class SampleClass {J
+public class SampleClass {
     static class Baz<T> {
         public static List<Baz<Object>> sampleMethod(Baz<Object> param) {
             return null;
@@ -148,7 +149,7 @@ public class SourceCompatibilityDemo {
 
 ### ConcurrentHashMap.keySet
 
-在 Java8 中 ConcurrentHashMap 的 keySet 方法的返回类型不再是 Set，而是 KeySetView 类，该类在低版本 Java 中不存在。这里我们故意使用 Java8 开发代码，并编译成 Java6 格式（字节码版本为 50） 
+在 Java8 中 ConcurrentHashMap 的 keySet 方法的返回类型不再是 Set，而是 KeySetView 类，该类在低版本 Java 中不存在。这里我们故意使用 Java8 开发代码，并编译成 Java6 版本（字节码版本为 50），以便代码可以在 Java6 短暂的运行。
 
 ```java
 public class BinaryCompatibilityDemo {
@@ -213,7 +214,7 @@ public class ApacheUtilsDemo {
 
 ## 三、如何规避代码中引入运行时 Java 兼容性问题
 
-从上面的 [ConcurrentHashMap#keySet](#ConcurrentHashMap.keySet) 案例知道，设置 `-target` 选项并不能保证代码可以正确地在某一版本的 JRE 上运行，一些较晚出现的 APIs 会在代码运行时产生连接错误，为了避免这个问题，我们可以配置 Java 编译器的引导类路径以匹配目标 JRE 或者使用 Animal Sniffer Maven Plugin 插件。同样的，设置 `-source` 选项也不能保证代码可以在某一版本的 JDK 上编译通过，为了解决这个问题，我们需要使用与启动 Maven 不同的特定 JDK 版本编译代码<sup>[1]</sup>。
+从上面的 [ConcurrentHashMap#keySet](#concurrenthashmapkeyset) 案例知道，设置 `-target` 选项并不能保证代码可以正确地在某一版本的 JRE 上运行，一些较晚出现的 APIs 会在代码运行时产生连接错误，为了避免这个问题，我们可以配置 Java 编译器的引导类路径以匹配目标 JRE 或者使用 Animal Sniffer Maven Plugin 插件。同样的，设置 `-source` 选项也不能保证代码可以在某一版本的 JDK 上编译通过，为了解决这个问题，我们需要使用与启动 Maven 不同的特定 JDK 版本编译代码<sup>[1]</sup>。
 
 继续以 compatibility-demo<sup>[7]</sup> 为例，如何规避引入 Java 兼容性问题。
 
@@ -288,7 +289,7 @@ The Animal Sniffer Plugin 可以用于构建 APIs 签名以及通过对照 APIs 
 
 通过上述方式基本可以的避免引入 Java 兼容性问题，但我们日常的研发环境中代码编译过程大部分都在统一的构建平台进行，一些外部环境是 maven 插件不能控制的，构建平台升级 JDK 也可能把 Java 兼容性问题引入到应用中。时刻保持代码编译、打包和运行时的 JDK 版本一致是解决应用引入 Java 兼容性问题的最好方式<sup>[8]</sup>。
 
-## 四、如何探测应用引入的 jar 潜在 Java 兼容问题呢
+## 四、如何探测应用引入的 jar 潜在 Java 兼容问题
 
 不论是设置编译时 JDK 还是使用 Sniffer 插件，都默认了一个前提，即我们拥有源代码并可以修改代码的构建配置与流程，但如果我们在应用中更新或者引入一个三方依赖（其他组织发布的 jar），最经典的案例莫过于，基于 Spring 开发的应用避免不了升级 Spring 版本或者相关依赖，我们有必要清楚这些 jar 是否潜在 Java 兼容性问题，这里我就以 Java APIs 为例，讨论下如何检测三方 Jar 是否存在 Java APIs、类文件格式的不兼容（源码和二进制兼容性的一部分）。
 
@@ -298,7 +299,7 @@ The Animal Sniffer Plugin 可以用于构建 APIs 签名以及通过对照 APIs 
 
 ### 4.2 实践
 
-实验下 animal-sniffer-jar-with-dependencies 的功能，以上文提到的 [ConcurrentHashMap#keySet](#ConcurrentHashMap.keySet) 案例的编译产物作为测试目标，运行 `java -jar animal-sniffer-jar-with-dependencies.jar /Users/qingqin/git/compatibility-demo/target/classes -v 6` 
+实验下 animal-sniffer-jar-with-dependencies 的功能，以上文提到的 [ConcurrentHashMap#keySet](#concurrenthashmapkeyset) 案例的编译产物作为测试目标，运行 `java -jar animal-sniffer-jar-with-dependencies.jar /Users/qingqin/git/compatibility-demo/target/classes -v 6` 
 
 其中 `-i` 用于忽略一些包路径，一般可以把自身以及无需关注的依赖包忽略来减少干扰；`-v` 用于设置期望的 Java 版本，并使用该版本的 Java APIs 签名作为参考；
 
