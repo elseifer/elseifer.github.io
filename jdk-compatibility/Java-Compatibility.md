@@ -214,7 +214,7 @@ public class ApacheUtilsDemo {
 
 ![Apache StringUtils 示例的编译产物](./images/apache_stringutils.jpg)
 
-在 target/classes 目录切换 Java 版本运行代码 `java -classpath  .:/Users/qingqin/.m2/repository/org/apache/commons/commons-lang3/3.7/commons-lang3-3.7.jar  github.compatibility.binary.ApacheUtilsDemo`，在 Java8 下 ApacheUtilsDemo 输出结果 false，但是在 Java6 下抛出 UnsupportedClassVersionError 错误（LinkageError 的子类）
+在 target/classes 目录切换 Java 版本运行代码 `java -classpath  .:/Users/qingqin/.m2/repository/org/apache/commons/commons-lang3/3.7/commons-lang3-3.7.jar  github.compatibility.binary.ApacheUtilsDemo`，在 Java8 环境下 ApacheUtilsDemo 输出结果 false，但是在 Java6 环境下抛出 UnsupportedClassVersionError 错误（LinkageError 的子类）
 
 ![Apache StringUtils 示例在不同 Java 版本下的运行结果](./images/apache_stringutils_run_result.jpg)
 
@@ -231,7 +231,7 @@ The Animal Sniffer Plugin<sup>[2]</sup> 可以用于构建 APIs 签名以及通�
 #### 3.1.1 如何配置
 
 为了对照 APIs 签名检查我们的应用，必须在 `pom.xml` 中配置需要参考的签名，例如：
-配置 java1.6 的签名作为参考，在 mvn 编译代码后手动执行 `animal-sniffer:check` 可以进行签名检查
+配置 java6 的签名作为参考，在 mvn 编译代码后手动执行 `animal-sniffer:check` 可以进行签名检查
 
 ```xml
 <plugin>
@@ -279,7 +279,7 @@ The Animal Sniffer Plugin<sup>[2]</sup> 可以用于构建 APIs 签名以及通�
 
 #### 3.1.2 使用效果
 
-执行 `mvn clean compile` 编译代码，Maven 将在 check 阶段报错，animal-sniffer 插件检测出不兼容的 Java Apis 引用，例如 Java8 中新增的 ConcurrentHashMap.KeySetView 类。
+执行 `mvn clean compile` 编译代码，Maven 将在 check 阶段报错，animal-sniffer 插件检测出不兼容的 Java APIs 引用，例如 Java8 中新增的 ConcurrentHashMap.KeySetView 类。
 
 ![animal sniffer](./images/animal_sniffer.jpg)
 
