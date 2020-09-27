@@ -34,19 +34,19 @@ Oracle 提供了 Java 兼容性指导手册，如 *[Compatibility Guide for JDK 
 
 ## 二、Java 兼容性的若干案例 
 
-下面创建一个示例工程 [compatibility-demo](https://github.com/elseifer/compatibility-demo.git) 演示 Java 兼容性，本文涉及的基本软件环境为 JDK8 和 Maven 3.6.3，同时会依据需要调整代码运行时 JDK 为 6/7/8/14 版本。
+下面创建一个示例工程 [compatibility-demo](https://github.com/elseifer/compatibility-demo.git) 演示应用中可能引入的 Java 不兼容问题，本文涉及的基本软件环境为 JDK8 和 Maven 3.6.3，并根据需要会调整代码运行时的 JDK 为 6/7/8/14 版本。
 
 ![Maven 和 JDK 环境](./images/env.jpg)
 
 ### 2.1 源码兼容性
 
-Java 编译器的工作包括将抽象的名称映射到具体的名称，把源代码中出现的简单的限定名映射为 class 文件中的二进制名称，源代码兼容性涉及源代码到 class 文件的映射，不仅包括这种映射是否可能，而且还包括生成的 class 文件是否合适。在编译期间添加新类、现有的类添加重载方法都会对的源代码兼容性产生影响。
+Java 编译器的工作包括将抽象的名称映射到具体的名称，特别是把源代码中出现的简单的限定名映射为 class 文件中的二进制名称，源代码兼容性涉及源代码到 class 文件的映射，不仅包括这种映射是否可能，而且还包括生成的 class 文件是否合适。
 
 这里演示 Java 版本升级对 Java 应用源码的影响，构造两个场景：
 + JDK7 开发的代码在 Java8 下编译失败；
 + JDK6 开发的代码在 Java8 下编译成功，但是程序运行异常，需要对源代码进行修改；
 
-示例代码位于 compatibility-demo 的 [source 分支](https://github.com/elseifer/compatibility-demo/blob/source/src/main/java/github/compatibility/source)
+示例代码位于 compatibility-demo 的 [source 分支](https://github.com/elseifer/compatibility-demo/blob/source/src/main/java/github/compatibility/source)。
 
 ### javac 的不兼容
 如下代码：
@@ -123,10 +123,10 @@ public class SourceCompatibilityDemo {
 在 Java6 下运行正常：
 ![Java 6 下运行结果](./images/proxy_6_non_setAccessible.jpg)
 
-没有 constructor.setAccessible(true) 和 method.setAccessible(true)，在 Java8 下运行异常：
+在注释 constructor.setAccessible(true) 和 method.setAccessible(true)时，在 Java8 下运行将会抛出异常：
 ![Java 8 下运行结果](./images/proxy_8_non_setAccessible.jpg)
 
-添加 constructor.setAccessible(true); 和 method.setAccessible(true)，在 Java8 下运行正常：
+添加 constructor.setAccessible(true); 和 method.setAccessible(true)后，在 Java8 下则运行正常：
 ![Java 6 下运行结果](./images/proxy_8_setAccessible.jpg)
 
 ### 2.2 二进制兼容性
@@ -180,7 +180,7 @@ public class BinaryCompatibilityDemo {
 
 ![ConcurrentHashMap 示例的编译产物](./images/concurrentmap.jpg)
 
-在 target/classes 目录下，切换 Java 版本运行代码 `java github.compatibility.binary.BinaryCompatibilityDemo`，在 Java8 下 BinaryCompatibilityDemo 输出结果 0，但是在 Java6 下抛出 NoSuchMethodError 错误（LinkageError 的子类）。Java6 版本（字节码版本 50）格式的 `BinaryCompatibilityDemo.class` JVM8 下可以正常运行，但在 JVM6 是无法运行。
+在 target/classes 目录下，切换 Java 版本运行代码 `java github.compatibility.binary.BinaryCompatibilityDemo`，在 Java8 下 BinaryCompatibilityDemo 输出结果 0，但是在 Java6 下抛出 NoSuchMethodError 错误（LinkageError 的子类）。Java6 版本（字节码版本 50）格式的 `BinaryCompatibilityDemo.class` JVM8 下可以正常运行，但在 JVM6 是无法运行。
 
 ![ConcurrentHashMap 示例在不同 Java 版本下的运行结果](./images/concurrentmap_run_result.jpg)
 
@@ -220,7 +220,7 @@ public class ApacheUtilsDemo {
 
 ## 三、如何规避代码中引入运行时 Java 兼容性问题
 
-从上面的 [ConcurrentHashMap#keySet](#concurrenthashmapkeyset) 案例知道，设置 `-target` 选项并不能保证代码可以正确地在某一版本的 JRE 上运行，一些较晚出现的 APIs 会在代码运行时产生连接错误，为了避免这个问题，我们可以配置 Java 编译器的引导类路径以匹配目标 JRE 或者使用 Animal Sniffer Maven Plugin 插件。同样的，设置 `-source` 选项也不能保证代码可以在某一版本的 JDK 上编译通过，为了解决这个问题，我们需要设置与运行 Maven 不同的特定版本的 JDK 来编译代码<sup>[1]</sup>。
+从上面的 [ConcurrentHashMap#keySet](#concurrenthashmapkeyset) 案例知道，设置 `-target` 选项并不能保证代码可以正确地在某一版本的 JRE 上运行，一些较晚出现的 APIs 会在代码运行时产生连接错误，为了避免这个问题，我们可以配置 Java 编译器的引导类路径来匹配目标 JRE 或者使用 Animal Sniffer Maven Plugin 插件。同样的，设置 `-source` 选项也不能保证代码可以在某一版本的 JDK 上编译通过，为了解决这个问题，我们需要设置与运行 Maven 不同的特定版本的 JDK 来编译代码<sup>[1]</sup>。
 
 继续以 compatibility-demo<sup>[7]</sup> 为例，如何规避引入 Java 兼容性问题。
 
@@ -279,19 +279,19 @@ The Animal Sniffer Plugin<sup>[2]</sup> 可以用于构建 APIs 签名以及通�
 
 #### 3.1.2 使用效果
 
-执行 mvn clean compile 编译代码，Maven 将在 check 阶段报错，animal-sniffer 插件检测出不兼容的 Java Apis 引用，例如 Java8 中新增的 ConcurrentHashMap.KeySetView 类。
+执行 `mvn clean compile` 编译代码，Maven 将在 check 阶段报错，animal-sniffer 插件检测出不兼容的 Java Apis 引用，例如 Java8 中新增的 ConcurrentHashMap.KeySetView 类。
 
 ![animal sniffer](./images/animal_sniffer.jpg)
 
 ### 3.2 maven-compiler-plugin 指定 JDK Tools
 
-这里涉及 Maven Toolchains 的运用<sup>[3]</sup>，在应用构建过程中 Maven 会使用 JDK 来执行每个阶段：编译源代码、生成 Javadoc、运行单元测试等，每个 Maven 插件可能使用不同的 JDK Tools，例如 javac、javadoc。通过 Toolchains，我们可以指定 Maven 插件使用的 JDK Tool 的路径，并区别于 Maven 实例自身运行的 JDK。
+这里涉及 Maven Toolchains 的运用<sup>[3]</sup>，在应用构建过程中 Maven 会使用 JDK 来执行每个阶段：编译源代码、生成 Javadoc、运行单元测试等，每个 Maven 插件可能使用不同的 JDK Tools，例如 `javac`、`javadoc`。通过 Toolchains，我们可以指定 Maven 插件使用的 JDK Tool 的路径，并区别于 Maven 实例自身运行的 JDK。
 
-与 -target、-source 不同（本质为使用固定版本的 JDK 生成不同字节码版本的 .class 文件），通过 maven-compiler-plugin 指定 JDK Tools 更类似于切换编译环境的 JDK 版本，也能更好的避免引入 JDK 不兼容问题。
+与 `-target`、`-source` 不同（本质为使用固定版本JDK的编译器来生成不同字节码版本的 class 文件），通过 maven-compiler-plugin 指定 JDK Tools 路径（包括 `javac`）更类似于切换编译环境的 JDK 版本，也能更好的避免引入 JDK 不兼容问题。
 
 #### 3.2.1 如何配置
 示例代码位于 compatibility-demo 的 [javacpath 分支](https://github.com/elseifer/compatibility-demo/blob/javacpath/pom.xml)，其中 ${JAVA_7_HOME} 可以在 pom.xml 或者 setting.xml 中指定。</br>
-```
+```xml
 <plugin>
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-compiler-plugin</artifactId>
@@ -315,7 +315,7 @@ The Animal Sniffer Plugin<sup>[2]</sup> 可以用于构建 APIs 签名以及通�
 
 ### 3.3 小结
 
-通过实践操作证明，上述方式可以避免在代码中引入 Java 兼容性问题，但我们日常的研发环境中代码编译过程大部分都在统一的构建平台进行，一些外部环境是 maven 插件不能控制的，构建平台升级 JDK 也可能把 Java 兼容性问题引入到应用中。时刻保持代码编译、打包和运行时的 JDK 版本一致是解决应用引入 Java 兼容性问题的最好方式<sup>[8]</sup>。
+经过 Demo 实践上述 3.1 和 3.2 小节的内容，适当使用 Maven 插件可以避免我们在代码中引入 Java 兼容性问题（主要是二进制兼容性），但我们日常的研发环境中代码编译过程大部分都在统一的构建平台进行，一些外部环境是 Maven 插件不能控制的，构建平台升级 JDK 也可能将 Java 兼容性问题引入到应用中。时刻保持代码编译、打包和运行时的 JDK 版本一致是解决应用引入 Java 兼容性问题的最好方式<sup>[8]</sup>。
 
 ## 四、如何探测应用引入的 jar 潜在 Java 兼容问题
 
