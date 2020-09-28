@@ -15,7 +15,7 @@ The Build-Jdk does not take toolchains configuration into account. It is the sam
 可以使用如下 shell 脚本查看 .m2 仓库中使用 jdk8 编译的 jar 文件。
 
 ```
-jarList=$(find /.m2/respository -name '*.jar')
+jarList=$(find ~/.m2/respository -name '*.jar')
 for file in $jarList; do
     jdkVersion=$(unzip -p $file META-INF/MANIFEST.MF | grep Build-Jdk)
     if [[ $jdkVersion =~ "1.8"]]; then
