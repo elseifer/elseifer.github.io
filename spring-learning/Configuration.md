@@ -150,7 +150,7 @@ scanBasePackages 属性对应 ComponentScan 的 basePackages 属性，exclude �
 
 ```properties
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.alipay.pvsofaboot.service.MyAutoConfiguraion
+  elseifer.example.service.MyAutoConfiguraion
 
 org.springframework.context.ApplicationContextInitializer=\
   org.springframework.boot.context.ContextIdApplicationContextInitializer
