@@ -115,19 +115,19 @@ protected ConfigurableApplicationContext createApplicationContext() {
 
 ## ComponentScan 注解
 
-这里填下前文的一个知识点：ConfigurationClassPostProcessor 是需要配置的，例如在 xml 中添加 `<context:component-scan/>` 元素，但是不是仅能通过 XML 配置呢? 
+这里填下前文的一个知识点：ConfigurationClassPostProcessor 是需要配置的，例如在 xml 中添加 `<context:component-scan/>` 元素，但是不是仅能通过 xml 配置呢? 答案自然是否定的。
 
 ComponentScan 注解，这里引用下它的注释：
 >Configures component scanning directives for use with @Configuration classes. Provides support parallel with Spring XML's <context:component-scan> element.  
 Note that the `<context:component-scan>` element has an annotation-config attribute; however, this annotation does not. This is because in almost all cases when using @ComponentScan, default annotation config processing (e.g. processing @Autowired and friends) is assumed. Furthermore, when using AnnotationConfigApplicationContext, annotation config processors are always registered, meaning that any attempt to disable them at the @ComponentScan level would be ignored.
 
-[基于java的配置](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-java)文档中提到`@ComponentScan` 注解可以代替 `<context:component-scan/>` 配置。
+[基于java的配置](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-java)文档中提到 `@ComponentScan` 注解可以代替 `<context:component-scan/>` 配置。
 
-可以知道 @ComponentScan 注解同样会注册 Annotation Config 相关的处理器，再结合前文中提及 `@SpringBootApplication` 同时被 `@SpringBootConfiguration` 和 `@ComponentScan` 两个注解所标记，这就可以理解在使用 SpringBoot 的过程中，我们通常无需关心 ConfigurationClassPostProcessor 的配置了。
+可以知道 `@ComponentScan` 注解同样会注册 Annotation Config 相关的处理器，再结合前文中提及 `@SpringBootApplication` 同时被 `@SpringBootConfiguration` 和 `@ComponentScan` 两个注解所标记，这就可以理解在使用 SpringBoot 的过程中，我们通常无需关心 ConfigurationClassPostProcessor 的配置了。
 
 ### EnableAutoConfiguration 注解
-EnableAutoConfiguration 注解用于激活自动配置（auto-configuration），由 SpringBoot 中提供的，简单理解 @Configuration 标识了 Spring 配置类，@ComponentScan 告诉 Spring 扫描哪些配置类，而 EnableAutoConfiguration 则告诉 Spring 可以装配或者不装配哪些配置类。
-我理解是这三者分别表述了：是什么？ 有什么？ 用什么？
+EnableAutoConfiguration 注解用于激活自动配置（auto-configuration），由 SpringBoot 中提供的，简单理解 `@Configuration` 标识了 Spring 配置类，`@ComponentScan` 告诉 Spring 扫描哪些配置类，而 `@EnableAutoConfiguration` 则告诉 Spring 可以装配或者不装配哪些配置类。
+我理解这三者分别表述了：是什么？ 有什么？ 用什么？
 
 ### 再谈 SpringBootApplication 注解
 
@@ -140,9 +140,9 @@ scanBasePackages 属性对应 ComponentScan 的 basePackages 属性，exclude �
 
 ## 扫描配置类的其他方式
 
-不论是通过 xml 和 注解配置注解类的解析，本质上均是注册 ConfigurationClassPostProcessor 等，而配置类的扫描是按照 `<context:component-scan/>` 和 `@ComponentScan` 的 basePackages 属性值来取得扫描路径，从而扫描出 classpath 下所有需要解析的配置类。
+不论是 xml 或者配置类均是 ConfigurationClassPostProcessor 等处理的，配置类的扫描是按照 `<context:component-scan/>` 和 `@ComponentScan` 的 basePackages 属性值来取得扫描路径，从而扫描出 classpath 下所有需要解析的配置类。
 
-如果需要被 Ioc 容器管理的Bean的路径不在 Spring Boot 的包扫描路径下怎么办呢，即如何加载第三方的 Bean 呢？
+如果需要被 Ioc 容器管理的 Bean 的路径不在 SpringBoot 的包扫描路径下怎么办呢，即如何加载第三方的 Bean 呢？
 
 ### 方式1：spring.factories
 
@@ -167,7 +167,7 @@ org.springframework.context.ApplicationContextInitializer=\
 public class SpringBootTestApplication {...}
 ```
 
-额外提及下 @ImportResource，同 Import 的使用，它的作用近似于 `<import/>` 用于加载 xml 配置。
+额外提及下 `@ImportResource`，同 Import 的使用，它的作用近似于 `<import/>` 用于加载 xml 配置。
 
 ```java
 @ImportResource({"classpath*:test/META-INF/example/*.xml"})
@@ -177,11 +177,15 @@ public class SpringBootTestApplication {...}
 
 ## End
 到此，我们介绍了配置类、配置类的注解及其原理等内容，简单回顾：
-1. 配置类可以代替 xml 来注册 Bean，使用 @Configuration 等注解声明配置类；
+1. 配置类可以代替 xml 来注册 Bean，使用 `@Configuration` 等注解声明配置类；
+    - `@Configuation` 等价于 `<Beans></Beans>`
+    - `@Bean` 等价于 `<Bean></Bean>`
+    - `@ComponentScan` 等价于 `<context:component-scan/>`
 2. 配置类由 ConfigurationClassPostProcessor 负责解析；
-3. ComponentScan 会默认注册 ConfigurationClassPostProcessor；
-4. 第三方或者非默认路径的配置类需要引入时，可以使用 spring.factories、@Import；
+3. 使用 `@ComponentScan` 时 SpringBoot 将默认注册 ConfigurationClassPostProcessor；
+4. 第三方或者非默认路径的配置类需要引入时，可以使用 spring.factories、`@Import`；
 
 ## REF
 1.[Spring Framework Doc](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html)  
 2.[componentscan&enableautoconfiguration](https://www.baeldung.com/spring-componentscan-vs-enableautoconfiguration)
+3.[Aggregating @Configuration classes with @Import](https://docs.spring.io/spring-javaconfig/docs/1.0.0.M4/reference/html/ch04s03.html)
