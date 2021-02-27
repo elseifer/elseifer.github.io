@@ -181,3 +181,7 @@ public class SpringBootTestApplication {...}
 2. 配置类由 ConfigurationClassPostProcessor 负责解析；
 3. ComponentScan 会默认注册 ConfigurationClassPostProcessor；
 4. 第三方或者非默认路径的配置类需要引入时，可以使用 spring.factories、@Import；
+
+## REF
+1.[Spring Framework Doc](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html)  
+2.[componentscan&enableautoconfiguration](https://www.baeldung.com/spring-componentscan-vs-enableautoconfiguration)
