@@ -185,6 +185,6 @@ public class SpringBootTestApplication {...}
 4. 第三方或者非默认路径的配置类需要引入时，可以使用 spring.factories、`@Import`；
 
 ## REF
-1.[Spring Framework Doc](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html)  
-2.[componentscan&enableautoconfiguration](https://www.baeldung.com/spring-componentscan-vs-enableautoconfiguration)
-3.[Aggregating @Configuration classes with @Import](https://docs.spring.io/spring-javaconfig/docs/1.0.0.M4/reference/html/ch04s03.html)
+1. [Spring Framework Reference](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html)  
+2. [componentscan&enableautoconfiguration](https://www.baeldung.com/spring-componentscan-vs-enableautoconfiguration)  
+3. [Aggregating @Configuration classes with @Import](https://docs.spring.io/spring-javaconfig/docs/1.0.0.M4/reference/html/ch04s03.html)
