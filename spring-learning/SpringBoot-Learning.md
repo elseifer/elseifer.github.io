@@ -4,9 +4,9 @@
 
 ## spring.io
 
-- 了解版本发布和特性 [Spring Boot Overview](https://spring.io/projects/spring-boot#overview)  
-- 阅览帮助文档，例如 [Spring Boot Doc](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#legal)、[Spring Framework Doc](https://docs.spring.io/spring-framework/docs/current/reference/html/index.html)  
-- 获取 API 文档，例如 [Spring Boot API](https://docs.spring.io/spring-boot/docs/current/api/)、[Spring Framework API](https://docs.spring.io/spring-framework/docs/current/javadoc-api/overview-summary.html)  
+- 了解版本发布和特性 [Spring-Boot Overview](https://spring.io/projects/spring-boot#overview)  
+- 阅览帮助文档，例如 [Spring-Boot Reference](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#legal)、[Spring Framework Reference](https://docs.spring.io/spring-framework/docs/current/reference/html/index.html)  
+- 获取 API 文档，例如 [Spring-Boot API](https://docs.spring.io/spring-boot/docs/current/api/)、[Spring Framework API](https://docs.spring.io/spring-framework/docs/current/javadoc-api/overview-summary.html)  
 
 ## baeldung.com
 
