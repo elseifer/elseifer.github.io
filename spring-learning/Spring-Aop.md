@@ -89,3 +89,5 @@ org.springframework.aop.framework.ProxyFactoryBean 是 FactoryBean 的一个实�
 2. [Spring 中 JDK 动态代理与 CGLIB 动态代理](https://blog.csdn.net/wangzhihao1994/article/details/80913210)
 
 3. [BeanFactory 和 FactoryBean 的区别](https://www.cnblogs.com/aspirant/p/9082858.html)
+
+4. [AOP设计基本原理](https://blog.csdn.net/luanlouis/article/details/51095702)
