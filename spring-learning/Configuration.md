@@ -49,11 +49,11 @@ ConfigurationClassPostProcessor 首先会判断在 ApplicationContext 中的 bea
 AnnotatedElementUtils.isAnnotated(TestApplication.class, Configuration.class.getName());
 ```
 
-前文提到了，被 @Configuration 注解的类是被视为配置类的，但为什么 SpringBootApplication 启动类会被当做配置类呢？ 这得益于 SpringBootConfiguration 注解。
+前文提到了，被 @Configuration 注解的类是被视为配置类的，那为什么 SpringBootApplication 启动类会被当做配置类呢？
 
 #### SpringBootConfiguration 注解
 
-看的它的定义：
+得益于 SpringBootConfiguration 注解，正如它的定义：
 ```java
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

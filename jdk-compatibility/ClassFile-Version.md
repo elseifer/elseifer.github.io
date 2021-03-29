@@ -1,6 +1,6 @@
 # 有关 class 文件的编译版本
 
-## MANIFEST.MF 文件
+## 一、MANIFEST.MF 文件
 
 JAR files support a wide range of functionality, including electronic signing, version control, package sealing, and others. What gives a JAR file this versatility? The answer is the JAR file's manifest.
 
@@ -24,7 +24,7 @@ for file in $jarList; do
 done
 ```
 
-## Maven Compiler Plugin
+## 二、Maven Compiler Plugin
 
 Sometimes when you may need to compile a certain project to a different version than what you are currently using. The javac can accept such command using -source and -target. The Compiler Plugin can also be configured to provide these options during compilation<sup>[3]</sup>.
 
@@ -56,11 +56,11 @@ or configure the plugin directly:
 
  **Note:** Merely setting the target option does not guarantee that your code actually runs on a JRE with the specified version. The pitfall is unintended usage of APIs that only exist in later JREs which would make your code fail at runtime with a linkage error<sup>[3]</sup>. 
 
-## ClassFile Format
+## 三、ClassFile Format
 
-类文件（.class 文件扩展名）是包含 Java 字节码 ByteCode 的文件，可以在 Java 虚拟机上执行<sup>[7]</sup>，每个类文件包含了一个类、接口或者模块（Java 9<sup>[5]</sup>）的定义
+类文件（.class 文件扩展名）是包含 Java 字节码（Java bytecode）的文件，可以在 Java 虚拟机上执行<sup>[7]</sup>，每个类文件包含了一个类、接口或者模块（Java 9<sup>[5]</sup>）的定义。
 
-Java 程序（.java 文件）可以通过 Java compiler 生成字节码文件，其他基于 JVM 的语言也都可以通过自己的编译器生成字节码文件，例如 Scala，Groovy 等。
+Java 程序源文件（.java 文件）经过 Java compiler 处理后产生字节码文件，其他基于 JVM 的语言也可以通过自己的编译器生成字节码文件，例如 Scala，Groovy 等。
 
 ### 查看 ClassFile 的字节码版本
 
@@ -68,7 +68,7 @@ Java 程序（.java 文件）可以通过 Java compiler 生成字节码文件，
 
 major、minor 共同决定了 class 文件格式的版本，对于给定的 major M，minor m，则 class 文件格式的版本为 M.m，对于某一版本的 class 文件格式，必须在 JVM 所能支持的范围，即最小支持版本 <= M.m <= 最大支持版本，否则 JVM 将会抛出 UnsupportedClassVersionError 错误<sup>[5]</sup>。
 
-依据 JVM 规范定义，class 文件的首部包含有字节码版本信息。对于如何查看 class 文件，这里简要提及一下三种方式。
+依据 JVM 规范定义，class 文件的首部包含有字节码版本信息。对于如何查看 class 文件，大概有以下三种工具或方法。
 
 1. ByteCode Viewer
 
@@ -90,7 +90,7 @@ javap -v Convertable.class
 
 ![javap](images/javap_v.jpg)
 
-## bytecode version 和 jdk version 的映射关系
+## 四、bytecode version 和 jdk version 的映射关系
 
 | /    |  major | jdk  |
 | :--: |  :--:  | :--: |
@@ -99,7 +99,7 @@ javap -v Convertable.class
 | 版本  |  50    |  6  |
 | 版本  |  49    |  5  |
 
-# Build-Jdk、-target、major 的区别与联系
+## 五、Build-Jdk、-target、major 的区别与联系
 
 Build-Jdk：MANIFEST.MF 中说明启动 maven 运行时的 jdk 版本，值为 java.version，不影响 class 文件格式的版本。
 
