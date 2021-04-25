@@ -58,9 +58,9 @@ or configure the plugin directly:
 
 ## 三、ClassFile Format
 
-类文件（.class 文件扩展名）是包含 Java 字节码（Java bytecode）的文件，可以在 Java 虚拟机上执行<sup>[7]</sup>，每个类文件包含了一个类、接口或者模块（Java 9<sup>[5]</sup>）的定义。
+类文件（.class 文件扩展名）包含能够在 Java 虚拟机上执行的 Java 字节码（Java bytecode）。Java 程序源文件（.java 文件）经过 Java compiler 处理后产生 Java 类文件，其他 JVM 语言也可以通过自己的编译器生成类文件<sup>[7]</sup>，例如 Scala，Groovy 等。每个类文件包含了一个类、接口或者模块（Java 9<sup>[5]</sup>）的定义。
 
-Java 程序源文件（.java 文件）经过 Java compiler 处理后产生字节码文件，其他基于 JVM 的语言也可以通过自己的编译器生成字节码文件，例如 Scala，Groovy 等。
+为方便描述，下文中 class 文件均同一指代类文件（class file）、字节码文件。
 
 ### 查看 ClassFile 的字节码版本
 

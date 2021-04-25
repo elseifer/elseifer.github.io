@@ -219,7 +219,7 @@ public class ApacheUtilsDemo {
 
 ## 三、如何规避代码中引入运行时 Java 兼容性问题
 
-从上面的 [ConcurrentHashMap#keySet](#concurrenthashmapkeyset) 案例知道，设置 `-target` 选项并不能保证代码可以正确地在某一版本的 JRE 上运行，一些较晚出现的 APIs 会在代码运行时产生连接错误，为了避免这个问题，我们可以配置 Java 编译器的引导类路径来匹配目标 JRE 或者使用 Animal Sniffer Maven Plugin 插件。同样的，设置 `-source` 选项也不能保证代码可以在某一版本的 JDK 上编译通过，为了解决这个问题，我们需要设置与运行 Maven 不同的特定版本的 JDK 来编译代码<sup>[1]</sup>。
+从上面的 [ConcurrentHashMap#keySet](#concurrenthashmapkeyset) 案例知道，设置 `-target` 选项并不能保证代码可以正确地在某一版本的 JRE 上运行，一些较晚出现的 APIs 会在代码运行时产生连接错误，为了避免这个问题，我们可以配置 Java 编译器的引导类路径来匹配目标 JRE 或者使用 Animal Sniffer Maven Plugin 插件。同样的，设置 `-source` 选项也不能保证代码真真的在指定版本的 JDK 上编译。为此，我们需要设置与运行 Maven 不同的特定版本的 JDK 来编译代码<sup>[1]</sup>。
 
 继续以 compatibility-demo<sup>[7]</sup> 为例，如何规避引入 Java 兼容性问题。
 
@@ -311,6 +311,8 @@ The Animal Sniffer Plugin<sup>[2]</sup> 可以用于构建 APIs 签名以及通�
 
 </br>由于示例代码中使用 Java8 API，maven-compiler 编译抛出错误：
 ![mvn compiler](./images/mvn_compiler.jpg)
+
+这里我们对比 3.1 可发现，maven-compiler-plugin 报错提示并不包含 ConcurrentHashMap#keySet 信息，这是因为我们指定了 JDK7 java 来编译代码，javac 使用 JDK7 的 rt.jar 中 ConcurrentHashMap 来生成类文件。
 
 ### 3.3 小结
 
