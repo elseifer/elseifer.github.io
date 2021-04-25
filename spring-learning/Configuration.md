@@ -114,7 +114,7 @@ protected ConfigurableApplicationContext createApplicationContext() {
 
 ## ComponentScan 注解
 
-这里填下前文的一个知识点：ConfigurationClassPostProcessor 是需要配置的，例如在 xml 中添加 `<context:component-scan/>` 元素，但是不是仅能通过 xml 配置呢? 答案自然是否定的。
+这里填下前文的一个知识点：ConfigurationClassPostProcessor 是需要配置的，例如在 xml 中添加 `<context:component-scan/>` 元素，是不是仅能通过 xml 配置呢? 答案自然是否定的。
 
 ComponentScan 注解，这里引用下它的注释：
 >Configures component scanning directives for use with @Configuration classes. Provides support parallel with Spring XML's <context:component-scan> element.  
