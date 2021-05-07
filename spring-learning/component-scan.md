@@ -22,26 +22,33 @@ e.g. the {@link Repository @Repository} annotation or AspectJ's
 主要表述了以下几点：
 - 被 @Component 注解的类是 Spring 管理的组件；
 - 当启用注解配置、类路径扫描时，被其注解的类会被自动检测的；
-- @Component 是通用的原型注解（stereotype annotation），@Repository、@Service 和 @Controller 是 @Component 的特例化；
+- @Component 是通用的原型注解（stereotype annotation），其他原型注解，如 @Repository、@Service 和 @Controller 是 @Component 的特例化；
 
 
 @Component 解析
 
 `@Component`、`Repository` 、`Service` 和 `Controller` 均是由 `org.springframework.context.annotation.ClassPathBeanDefinitionScanner` 处理。
 
+### Bean 的名称
+AnnotationBeanNameGenerator 名字生成器，如果不指定 Component 的 value 属性，默认 bean name 为短类名，详见 `java.beans.Introspector#decapitalize`，例如
+
+java.example.MyRepository 的 bean 名称为 myRepository  
+java.example.DTMRepository 的 bean 名称为 DTMRepository
+
+![component-defaule-bean-name](images/component-defaule-bean-name.png)  
+
 ```xml
 <context:annotation-config />
 <context:component-scan />
 ```
 
-
-在基于注解方式配置Spring时，Spring 配置文件 applicationContext.xml，你可能会见<context:annotation-config/> 这样一条配置，它的作用是隐式的向Spring容器注册
+在基于注解方式配置Spring时，Spring 配置文件 applicationContext.xml 中有 <context:annotation-config/> ，它的作用是隐式的向Spring容器注册
 AutowiredAnnotationBeanPostProcessor,CommonAnnotationBeanPostProcessor,PersistenceAnnotationBeanPostProcessor,
 RequiredAnnotationBeanPostProcessor 
 
 `@ComponentScan` 
 
-### 如何理解 stereotype 
+## 如何理解 stereotype 
 
 [what-is-a-spring-stereotype](https://stackoverflow.com/questions/14756486/what-is-a-spring-stereotype)
 
@@ -64,14 +71,13 @@ EnableAutoConfiguration
 ### bean 可以被重复加载么？
 
 
-如果允许 bean 被重复加载，则需要在 spring property 中添加 
-`spring.main.allow-bean-definition-overriding=true` 配置
+如果允许重复加载 bean ，可以在 spring properties 中添加 `spring.main.allow-bean-definition-overriding=true` 配置
 
 
 ## SpringBoot 的装配几种装配方式
-
+ 
 基于 xml 的配置 
-基于注解配置
+基于 注解 配置
 基于 java 配置
 
 
