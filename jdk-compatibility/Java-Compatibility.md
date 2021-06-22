@@ -2,9 +2,9 @@
 
 本文内容主要有 Java 兼容性的分类、常见案例、规避引入不兼容问题的方法，同时基于开源项目定制一个探测任意三方 jar 的 Java 兼容性的工具。本文不讨论应用 APIs 变化对上下游应用产生的兼容性，而是关注应用编译、运行在不同版本 JVM 时可能引入的 Java 兼容性问题。
 
-## 一、什么是 Java 的兼容性
+## 一、什么是 Java 兼容性
 
-兼容性可以从两个方向上考虑<sup>[4]</sup>：
+兼容性可以从两个方向上考虑：
 + 向后兼容（backward compatibility）：新版本软件可以运行在低版本的环境中，也称为向下兼容（downward compatibility）
 + 向前兼容（forward compatibility）：低版本软件可以运行在高版本的环境中，也称为向上兼容（upward compatibility）
 
@@ -26,7 +26,7 @@
 
 在实际代码开发工作中，一种情况，我们无法保证程序开发、运行时的 JDK 版本相一致，例如开发阶段在源码中引用 Java8 特性中的类或方法并编译为 Java6 格式的类文件，不兼容问题会导致程序运行时时低版本 JVM 中抛出 LinkageError 错误；又例如，应用的编译和运行版本为 Java6，但是意外引入了某个编译版本为 Java8 的三方依赖的，则 JVM 运行期间会 UnsupportedClassVersionError 错误（class 文件格式的版本号限制了它可以在哪些 Java 版本上运行）。
 
-另一情况，尽管 JDK 对于 APIs 兼容性策略包括不可破坏二进制兼容性、不可引入源码的不兼容、管理行为兼容性的变化<sup>[9]</sup>，但一些高版本特性的实现带来的变化会破坏兼容性，包括但是不限于应用源码中使用了 `@deprecated` 标记的类或者方法，那么应用程序在迁移升级 JDK 时就可能遇到不兼容问题，例如 Java 9 中删除了 sun.misc.Unsafe 的 monitorEnter、monitorExit 和 tryMonitorEnter 方法被<sup>[12]</sup>。
+另一情况，尽管 JDK 对于 APIs 兼容性策略包括不可破坏二进制兼容性、不可引入源码的不兼容、管理行为兼容性的变化<sup>[9]</sup>，但一些高版本特性的实现带来的变化会破坏兼容性，包括但是不限于应用源码中使用了 `@deprecated` 标记的类或者方法，那么应用程序在迁移升级 JDK 时就可能遇到不兼容问题，例如 Java 9 中删除了 sun.misc.Unsafe 的 monitorEnter、monitorExit 和 tryMonitorEnter 方法<sup>[12]</sup>。
 
 Oracle 提供了 Java 兼容性指导手册，如 *[Compatibility Guide for JDK 8](https://www.oracle.com/java/technologies/javase/8-compatibility-guide.html)*，我们可以通过这些文档了解 Java 在不同版本间的兼容性变化。
 
@@ -180,15 +180,14 @@ public class BinaryCompatibilityDemo {
 
 ![ConcurrentHashMap 示例的编译产物](./images/concurrentmap.jpg)
 
-在 target/classes 目录下，切换 Java 版本运行代码 `java github.compatibility.binary.BinaryCompatibilityDemo`，在 Java8 下 BinaryCompatibilityDemo 输出结果 0，但是在 Java6 下抛出 NoSuchMethodError 错误（LinkageError 的子类）。Java6 版本（字节码版本 50）格式的 `BinaryCompatibilityDemo.class` JVM8 下可以正常运行，但在 JVM6 是无法运行。
+在 target/classes 目录下，切换 Java 版本并运行 `java github.compatibility.binary.BinaryCompatibilityDemo` 命令，在 Java8 下 BinaryCompatibilityDemo 输出结果 0，但是在 Java6 下它抛出了 NoSuchMethodError 错误（LinkageError 的子类）。
+于是，我们看到了一个令人不解的现象：Java6 版本（字节码版本 50）的 `BinaryCompatibilityDemo.class` 在 JVM8 下可以正常运行，却无法在 JVM6 下运行。
 
 ![ConcurrentHashMap 示例在不同 Java 版本下的运行结果](./images/concurrentmap_run_result.jpg)
 
-未经过反编译的二进制内容会更加直观明显的展示出问题所在：
+未经过反编译的二进制内容可以更加直观明显的展示问题所在：keySet 的方法签名（这里包括返回类型的）在字节码版本 50 的类文件中是不应该存在的。
 
 ![ConcurrentHashMap 示例的编译产物2](./images/concurrentmap_bytecode.jpg)
-
-keySet 的方法签名（这里包括返回类型的）在类版本 50 下是不可能存在的。
 
 ### Apache StringUtils
 
@@ -214,13 +213,13 @@ public class ApacheUtilsDemo {
 
 ![Apache StringUtils 示例的编译产物](./images/apache_stringutils.jpg)
 
-在 target/classes 目录切换 Java 版本运行代码 `java -classpath  .:/Users/qingqin/.m2/repository/org/apache/commons/commons-lang3/3.7/commons-lang3-3.7.jar  github.compatibility.binary.ApacheUtilsDemo`，在 Java8 环境下 ApacheUtilsDemo 输出结果 false，但是在 Java6 环境下抛出 UnsupportedClassVersionError 错误（LinkageError 的子类）
+在 target/classes 目录下，切换 Java 版本并运行 `java -classpath  .:/Users/qingqin/.m2/repository/org/apache/commons/commons-lang3/3.7/commons-lang3-3.7.jar  github.compatibility.binary.ApacheUtilsDemo` 命令，在 Java8 环境下 ApacheUtilsDemo 输出结果 false，但是在 Java6 环境下它抛出了 UnsupportedClassVersionError 错误（LinkageError 的子类）
 
 ![Apache StringUtils 示例在不同 Java 版本下的运行结果](./images/apache_stringutils_run_result.jpg)
 
 ## 三、如何规避代码中引入运行时 Java 兼容性问题
 
-从上面的 [ConcurrentHashMap#keySet](#concurrenthashmapkeyset) 案例知道，设置 `-target` 选项并不能保证代码可以正确地在某一版本的 JRE 上运行，一些较晚出现的 APIs 会在代码运行时产生连接错误，为了避免这个问题，我们可以配置 Java 编译器的引导类路径来匹配目标 JRE 或者使用 Animal Sniffer Maven Plugin 插件。同样的，设置 `-source` 选项也不能保证代码可以在某一版本的 JDK 上编译通过，为了解决这个问题，我们需要设置与运行 Maven 不同的特定版本的 JDK 来编译代码<sup>[1]</sup>。
+从上面的 [ConcurrentHashMap#keySet](#concurrenthashmapkeyset) 案例知道，设置 `-target` 选项并不能保证代码可以正确地在某一版本的 JRE 上运行，一些较晚出现的 APIs 会在代码运行时产生连接错误，为了避免这个问题，我们可以配置 Java 编译器的引导类路径来匹配目标 JRE 或者使用 Animal Sniffer Maven Plugin 插件。同样的，设置 `-source` 选项也不能保证代码真真的在指定版本的 JDK 上编译。为此，我们需要设置与运行 Maven 不同的特定版本的 JDK 来编译代码<sup>[1]</sup>。
 
 继续以 compatibility-demo<sup>[7]</sup> 为例，如何规避引入 Java 兼容性问题。
 
@@ -313,6 +312,8 @@ The Animal Sniffer Plugin<sup>[2]</sup> 可以用于构建 APIs 签名以及通�
 </br>由于示例代码中使用 Java8 API，maven-compiler 编译抛出错误：
 ![mvn compiler](./images/mvn_compiler.jpg)
 
+这里我们对比 3.1 可发现，maven-compiler-plugin 报错提示并不包含 ConcurrentHashMap#keySet 信息，这是因为我们指定了 JDK7 java 来编译代码，javac 使用 JDK7 的 rt.jar 中 ConcurrentHashMap 来生成类文件。
+
 ### 3.3 小结
 
 经过 Demo 实践上述 3.1 和 3.2 小节的内容，适当使用 Maven 插件可以避免我们在代码中引入 Java 兼容性问题（主要是二进制兼容性），但我们日常的研发环境中代码编译过程大部分都在统一的构建平台进行，一些外部环境是 Maven 插件不能控制的，构建平台升级 JDK 也可能将 Java 兼容性问题引入到应用中。时刻保持代码编译、打包和运行时的 JDK 版本一致是解决应用引入 Java 兼容性问题的最好方式<sup>[8]</sup>。
@@ -323,7 +324,7 @@ The Animal Sniffer Plugin<sup>[2]</sup> 可以用于构建 APIs 签名以及通�
 
 ### 4.1 改造 animal-sniffer
 
-通过阅读 animal-sniffer-maven-plugin 的源码，我发现它是基于 ASM 对字节码进行检查，加之有过 ASM 开发工具的经验，于是我设想把参考的 APIs 签名默认限制为 Java APIs 签名，调整检测目标为任意三方 jar 和 .class 文件路径来对它进行改造。在[我的 github](https://github.com/elseifer) 上可以获取 [animal-sniffer-jar-with-dependencies](https://github.com/elseifer/animal-sniffer/blob/enhance-signature-checker/animal-sniffer/src/main/java/org/codehaus/mojo/animal_sniffer/enhanced/EnhancedSigChecker.java) 的源代码，作为 animal-sniffer 变种，它完整包含所有依赖、可脱离 Maven 环境独立运行，可检查第三方 jar 而无需源代码，同时修复了一些 NPE 问题。
+通过阅读 animal-sniffer-maven-plugin 的源码，我发现它是基于 ASM 对字节码进行检查，结合之前一些 ASM 开发工具的经验，于是我设想把参考的 APIs 签名默认限制为 Java APIs 签名，调整检测目标为任意三方 jar 和 .class 文件路径来对它进行改造。在[我的 github](https://github.com/elseifer) 上可以获取 [animal-sniffer-jar-with-dependencies](https://github.com/elseifer/animal-sniffer/blob/enhance-signature-checker/animal-sniffer/src/main/java/org/codehaus/mojo/animal_sniffer/enhanced/EnhancedSigChecker.java) 的源代码，作为 animal-sniffer 变种，它完整包含所有依赖、可脱离 Maven 环境独立运行，可检查第三方 jar 而无需源代码，同时修复了一些 NPE 问题。
 
 ### 4.2 实践
 
@@ -334,7 +335,7 @@ The Animal Sniffer Plugin<sup>[2]</sup> 可以用于构建 APIs 签名以及通�
 示例运行结果：</br>
 ![jar checker](./images/jar-checker.jpg)
 
-和上文 3.1.2 部分的效果类似，animal-sniffer-jar-with-dependencies 检测也出 Java6 格式的 .class 文件中出现了不兼容的签名引用，包括 Java8 中新增的 ConcurrentHashMap.KeySetView 类、Optional 类、签名不兼容的 KeySetView ConcurrentHashMap.keySet 方法、新增的 ConcurrentHashMap.mappingCount 方法。
+和上文 3.1.2 部分的效果类似，animal-sniffer-jar-with-dependencies 也检测出 Java6 格式的 .class 文件中出现了不兼容的签名引用，包括 Java8 中新增的 ConcurrentHashMap.KeySetView 类、Optional 类、签名不兼容的 KeySetView ConcurrentHashMap.keySet 方法、新增的 ConcurrentHashMap.mappingCount 方法。
 
 animal-sniffer-jar-with-dependencies 可以检查第三方依赖的 Java 兼容性问题，但是局限于 Java APIs 变化或编译格式导致的源码和二进制兼容性问题，并不适用于全部类型的 Java 兼容性问题检查。
 
