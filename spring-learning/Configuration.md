@@ -62,7 +62,7 @@ AnnotatedElementUtils.isAnnotated(TestApplication.class, Configuration.class.get
 public @interface SpringBootConfiguration {}
 ```
 
-在 SpringBoot 设计中 SpringBootConfiguration 可用来代替 Configuration，而它在使用 SpringBootApplication 时会被自动带入。
+在 SpringBoot 设计中 SpringBootConfiguration 来代替 Configuration，在使用 SpringBootApplication 时会自动带入 SpringBootConfiguration。
 
 `@SpringBootApplication` 由如下几个注解构成：
 ```mermaid
@@ -77,7 +77,7 @@ graph TD
 
 即一个 SpringBootApplication 注解具备 Configuration、ComponentScan、EnableAutoConfiguration 三者的功能：注册Bean、组件自动扫描、自动配置。
 
-#### 何时被处理 
+#### 何时处理配置类 
 
 ConfigurationClassPostProcessor 又由谁来调用呢？  
 这里以 SpringBoot 为例，具体是哪个 ApplicationContext 是由 `org.springframework.boot.SpringApplication#createApplicationContext` 判断并创建。
@@ -109,7 +109,7 @@ protected ConfigurableApplicationContext createApplicationContext() {
 }
 ```
 
-随后 ApplicationContext 在 `org.springframework.context.support.AbstractApplicationContext#invokeBeanFactoryPostProcessors` 中触发 `ConfigurationClassPostProcessor#postProcessBeanDefinitionRegistry`的调用。
+随后 ApplicationContext 在 `org.springframework.context.support.AbstractApplicationContext#invokeBeanFactoryPostProcessors` 中触发 `ConfigurationClassPostProcessor#postProcessBeanDefinitionRegistry` 的调用。
 
 
 ## ComponentScan 注解
