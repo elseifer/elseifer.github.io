@@ -20,13 +20,14 @@ e.g. the {@link Repository @Repository} annotation or AspectJ's
 {@link org.aspectj.lang.annotation.Aspect @Aspect} annotation.
 
 主要表述了以下几点：
-- 被 @Component 注解的类是 Spring 管理的组件；
+- 被 @Component 注解的类是 Spring 管理的组件；
 - 当启用注解配置、类路径扫描时，被其注解的类会被自动检测的；
-- @Component 是通用的原型注解（stereotype annotation），其他原型注解，如 @Repository、@Service 和 @Controller 是 @Component 的特例化；
+- 如果类被 @Repository、@Aspect 所注解，也会被当做 spring 组件
 
 
 @Component 解析
 
+@Component 是通用的原型注解（stereotype annotation），其他原型注解 如 @Repository、@Service 和 @Controller 是 @Component 的特例化；  
 `@Component`、`Repository` 、`Service` 和 `Controller` 均是由 `org.springframework.context.annotation.ClassPathBeanDefinitionScanner` 处理。
 
 ### Bean 的名称
