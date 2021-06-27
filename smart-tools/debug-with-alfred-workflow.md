@@ -1,10 +1,6 @@
 # 懒人添加debug参数
 
-## Alfred 
-
-Alfred 是 Mac 下一款效能工具，提供便捷搜索、唤起程序、粘贴板等功能，这里介绍编写一个 Alfred workflows 插件来提高调试程序的效率。
-
-### 故事：懒人添加 debug 参数
+## 故事：懒人添加 debug 参数
 当我们需要临时在测试服务器上调试代码时，我们一般不太情愿修改代码或者变更基线来新增 debug 参数，可以通过
 `ps -ef|grep java` 找到对应 Java 进程，复制出来进程信息，例如：
 ```
@@ -21,7 +17,10 @@ nohup /Library/Java/JavaVirtualMachines/jdk1.8.0_171.jdk/Contents/Home/bin/java 
 3. 小心翼翼的添加上 nohup、debug 等参数；
 3. 把修改后信息粘贴在 bash 等终端上回车执行；
 
-其中的2、3步骤完全可以被自动化，我们可以借助 Alfred workflows 在粘贴板中直接添加 dubug 参数
+其中 2、3 步骤不够简洁，尤其是第 3 步简直是一次指尖苦力，我们可以借助 Alfred workflows 在粘贴板中替换 2、3 步。
+
+## Alfred 
+Alfred 是 Mac 下一款效能工具，提供便捷搜索、唤起程序、粘贴板等功能，这里介绍编写一个 Alfred workflows 插件来提高调试程序的效率。
 
 ### 自定义 Alfred Workflows
 
