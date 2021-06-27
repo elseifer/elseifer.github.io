@@ -15,7 +15,7 @@ Alfred 是 Mac 下一款效能工具，提供便捷搜索、唤起程序、粘�
 nohup /Library/Java/JavaVirtualMachines/jdk1.8.0_171.jdk/Contents/Home/bin/java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000 -jar demo-1.0.0-executable.jar &>out.log &
 ```
 
-不过这一过程依然不够懒，它需要人工操作如下三步：
+不过这一过程依然不够懒，它需要人工操作如下步骤：
 1. 在 bash 等终端上复制需要的 Java 进程信息；
 2. 把进程信息粘贴在 Sublime 等文本编辑器中；
 3. 小心翼翼的添加上 nohup、debug 等参数；
@@ -63,7 +63,7 @@ echo -n $result | pbcopy
 ## 课外：不同 Java 版本的 Debug 参数
 对于 Java5 以上版本，debug 参数：
 `-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000`  
-而 Java5 及更低版本的 dubug 参数：
+而 Java5 及更低版本，dubug 参数：
 `-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8000`
 
 # Ref
