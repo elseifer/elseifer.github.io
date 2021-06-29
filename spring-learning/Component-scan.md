@@ -1,6 +1,8 @@
 
-# Spring5 组件扫描
+# SpringBoot 组件扫描
 为了实现依赖项注入，Spring 创建了一个应用上下文（ApplicationContext）。Spring 实例化对象并将其添加到应用上下文中，应用上下文中的对象称为 Spring bean 或组件。Spring 解析 Spring bean 之间的依赖关系，并将Spring bean注入到其他Spring bean的字段或构造函数中。在类路径中搜索配置类的过程称为组件扫描<sup>[1]</sup>。
+
+SpringBoot2 基于 Spring5。
 
 ## @Component 注解
 `@Component` 注解的类是 Spring 配置类，为了说明 Spring Boot 的组件扫描（component scan），先从 `@Component` 说起。 
@@ -45,15 +47,16 @@ AnnotationBeanNameGenerator 名字生成器，如果不指定 Component 的 valu
 
 ## Auto-detection
 
-`@ComponentScan` 或者 `<context:component-scan/>` 会开启 Spring 的类路径的自动扫描。
+`@ComponentScan` 或者 `<context:component-scan/>` 会开启 Spring 基于类路径的自动扫描。
 
 [Bean-classpath-scanning](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-classpath-scanning)
 >The use of <context:component-scan> implicitly enables the functionality of <context:annotation-config>. There is usually no need to include the <context:annotation-config> element when using <context:component-scan>.
 
 ## Auto-configuration
 
-`@EnableAutoConfiguration` 是 SpringBoot 提供，不在 Spring Framework 核心包中，自动配置
+`@EnableAutoConfiguration` 是 SpringBoot 提供，不在 Spring Framework 核心包中。
 
+引用自文献<sup>[3]</sup>：
 >Spring Boot auto-configuration attempts to automatically configure your Spring application based on the jar dependencies that you have added. For example, if HSQLDB is on your classpath, and you have not manually configured any database connection beans, then Spring Boot auto-configures an in-memory database.
 
 ```Java 
