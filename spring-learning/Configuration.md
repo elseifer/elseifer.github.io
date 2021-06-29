@@ -1,4 +1,5 @@
 # Configuration 注解
+主要面向 Spring Boot 介绍。
 
 ## Configuration 注解的作用
 
@@ -25,7 +26,10 @@ ApplicationContext applicationContext = new AnnotationConfigApplicationContext(B
 
 判断一个类是否为一个配置类，可以看一下 `org.springframework.context.annotation.ConfigurationClassUtils#isConfigurationCandidate` 方法，Spring 中处理这个过程会循环进行，直到完成所有配置类的解析及所有bean的注册。 
 
-这里提及下 `@Configuration` 是被原型注解 `@Component` 所标记的，即 `@Configuration` 所注解的类也会被自动检测（auto-detection）处理的。
+`@Configuration` 的 Java Doc 知道 `@Configuration` 由 `@Component` 注解，因此被 `@Configuration` 注解的类会被自动检测（auto-detection）处理。
+
+>@Configuration is meta-annotated with @Component, therefore @Configuration classes are candidates for component scanning (typically using Spring XML's <context:component-scan/> element) and therefore may also take advantage of @Autowired/@Inject like any regular @Component.
+
 
 ### Configuration 处理器
 ConfigurationClassPostProcessor 负责解析和处理（更具体的讲是 postProcessBeanDefinitionRegistry 方法）被 `@Configuration` 注解的类。
@@ -38,10 +42,10 @@ This post processor is priority-ordered as it is important that any Bean methods
 
 #### 处理的顺序
 ConfigurationClassPostProcessor 首先会判断在 ApplicationContext 中的 bean 是否被 @Configuration 注解标记，然后使用 ConfigurationClassParser 来解析 @Configuration。ConfigurationClassPostProcessor 解析 @Configuration 的大致流程：
-  1. 使用ConfigurationClassUtils.checkConfigurationClassCandidate检查BeanDefinition是否@Configuration注解标记
-  2. 对@Configuration进行排序
-  3. 使用ConfigurationClassParser解析@Configuration注解的信息
-  4. 使用ConfigurationClassBeanDefinitionReader解析BeanDefinition
+  1. 使用 ConfigurationClassUtils.checkConfigurationClassCandidate 检查 BeanDefinition 是否 @Configuration 注解标记
+  2. 对 @Configuration 进行排序
+  3. 使用 ConfigurationClassParser 解析 @Configuration 注解的信息
+  4. 使用 ConfigurationClassBeanDefinitionReader 解析 BeanDefinition
 
 </br>其中 ConfigurationClassUtils.checkConfigurationClassCandidate 的判断逻辑与下列代码类似，AnnotatedElementUtils.isAnnotated 递归遍历所有注解：
 ```java
@@ -80,7 +84,10 @@ graph TD
 #### 何时处理配置类 
 
 ConfigurationClassPostProcessor 又由谁来调用呢？  
-这里以 SpringBoot 为例，具体是哪个 ApplicationContext 是由 `org.springframework.boot.SpringApplication#createApplicationContext` 判断并创建。
+
+ApplicationContext 在 `org.springframework.context.support.AbstractApplicationContext#invokeBeanFactoryPostProcessors` 中触发 `ConfigurationClassPostProcessor#postProcessBeanDefinitionRegistry` 的调用。
+
+具体是哪个 ApplicationContext 是由 `org.springframework.boot.SpringApplication#createApplicationContext` 判断并创建，这里以 SpringBoot 为例：
 
 ```java
 protected ConfigurableApplicationContext createApplicationContext() {
@@ -109,24 +116,21 @@ protected ConfigurableApplicationContext createApplicationContext() {
 }
 ```
 
-随后 ApplicationContext 在 `org.springframework.context.support.AbstractApplicationContext#invokeBeanFactoryPostProcessors` 中触发 `ConfigurationClassPostProcessor#postProcessBeanDefinitionRegistry` 的调用。
-
-
 ## ComponentScan 注解
 
 这里填下前文的一个知识点：ConfigurationClassPostProcessor 是需要配置的，例如在 xml 中添加 `<context:component-scan/>` 元素，是不是仅能通过 xml 配置呢? 答案自然是否定的。
 
-ComponentScan 注解，这里引用下它的注释：
+这里引用下 `@ComponentScan` 的注释：
 >Configures component scanning directives for use with @Configuration classes. Provides support parallel with Spring XML's <context:component-scan> element.  
 Note that the `<context:component-scan>` element has an annotation-config attribute; however, this annotation does not. This is because in almost all cases when using @ComponentScan, default annotation config processing (e.g. processing @Autowired and friends) is assumed. Furthermore, when using AnnotationConfigApplicationContext, annotation config processors are always registered, meaning that any attempt to disable them at the @ComponentScan level would be ignored.
 
-[基于java的配置](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-java)文档中提到 `@ComponentScan` 注解可以代替 `<context:component-scan/>` 配置。
+`@ComponentScan` 注解可以代替 `<context:component-scan/>` 配置，`@ComponentScan` 同样会注册 Annotation Config 相关的处理器。
 
-可以知道 `@ComponentScan` 注解同样会注册 Annotation Config 相关的处理器，再结合前文中提及 `@SpringBootApplication` 同时被 `@SpringBootConfiguration` 和 `@ComponentScan` 两个注解所标记，这就可以理解在使用 SpringBoot 的过程中，我们通常无需关心 ConfigurationClassPostProcessor 的配置了。
+我们结合前文中提及 `@SpringBootApplication` 同时被 `@SpringBootConfiguration` 和 `@ComponentScan` 两个注解所标记，这就可以理解在使用 SpringBoot 的过程中，我们通常无需关心 ConfigurationClassPostProcessor 的配置了。
 
-### EnableAutoConfiguration 注解
-EnableAutoConfiguration 注解用于激活自动配置（auto-configuration），由 SpringBoot 中提供的，简单理解 `@Configuration` 标识了 Spring 配置类，`@ComponentScan` 告诉 Spring 扫描哪些配置类，而 `@EnableAutoConfiguration` 则告诉 Spring 可以装配或者不装配哪些配置类。
-我理解这三者分别表述了：是什么？ 有什么？ 用什么？
+## EnableAutoConfiguration 注解
+Spring Boot 提供了 `@EnableAutoConfiguration` 用于激活自动配置（auto-configuration），简单理解 `@Configuration` 标识了 Spring 配置类，`@ComponentScan` 告诉 Spring 扫描哪些配置类，而 `@EnableAutoConfiguration` 则告诉 Spring 可以使用或者不使用哪些配置类。
+我理解这三者分别表述了：配置类是什么？有哪些？用哪些？
 
 ### 再谈 SpringBootApplication 注解
 
@@ -139,7 +143,7 @@ scanBasePackages 属性对应 ComponentScan 的 basePackages 属性，exclude �
 
 ## 扫描配置类的其他方式
 
-不论是 xml 或者配置类均是 ConfigurationClassPostProcessor 等处理的，配置类的扫描是按照 `<context:component-scan/>` 和 `@ComponentScan` 的 basePackages 属性值来取得扫描路径，从而扫描出 classpath 下所有需要解析的配置类。
+不论是 XML 或者配置类均是 ConfigurationClassPostProcessor 等处理的，配置类的扫描是按照 `<context:component-scan/>` 和 `@ComponentScan` 的 basePackages 属性值来取得扫描路径，从而扫描出 classpath 下所有需要解析的配置类。
 
 如果需要被 Ioc 容器管理的 Bean 的路径不在 SpringBoot 的包扫描路径下怎么办呢，即如何加载第三方的 Bean 呢？
 
@@ -158,7 +162,7 @@ org.springframework.context.ApplicationContextInitializer=\
 
 ### 方式2：@Import
 
-在 SpringBoot Application 启动类（或者配置类）上使用 @Import 注解，它的等价于 `<import/>`
+在 SpringBoot Application 启动类（或者 Spring 配置类）上使用 @Import 注解，它的等价于 `<import/>`
 
 ```java
 @Import({MyConfig.class})
@@ -166,7 +170,7 @@ org.springframework.context.ApplicationContextInitializer=\
 public class SpringBootTestApplication {...}
 ```
 
-额外提及下 `@ImportResource`，同 Import 的使用，它的作用近似于 `<import/>` 用于加载 xml 配置。
+额外提及下 `@ImportResource`，同 `@Import` 的使用方式，用于加载 xml 配置，提供类似 xml 配置中的 </import>。
 
 ```java
 @ImportResource({"classpath*:test/META-INF/example/*.xml"})
@@ -180,9 +184,9 @@ public class SpringBootTestApplication {...}
     - `@Configuation` 等价于 `<Beans></Beans>`
     - `@Bean` 等价于 `<Bean></Bean>`
     - `@ComponentScan` 等价于 `<context:component-scan/>`
-2. 配置类由 ConfigurationClassPostProcessor 负责解析；
-3. 使用 `@ComponentScan` 时 SpringBoot 将默认注册 ConfigurationClassPostProcessor；
-4. 第三方或者非默认路径的配置类需要引入时，可以使用 spring.factories、`@Import`；
+2. 配置类由 `ConfigurationClassPostProcessor` 负责解析；
+3. 使用 `@ComponentScan` 时 SpringBoot 将默认注册 `ConfigurationClassPostProcessor`；
+4. 第三方或者非默认路径的配置类需要引入时，可以使用 `spring.factories`、`@Import`；
 
 ## REF
 1. [Spring Framework Reference](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html)  

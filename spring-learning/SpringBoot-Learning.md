@@ -1,6 +1,6 @@
 
 # Learning Guides
-对于学习 Spring Framework、SpringBoot 的一些免费电子资源。
+Spring Framework、SpringBoot 的一些免费电子资源。
 
 ## spring.io
 
@@ -10,7 +10,7 @@
 
 ## baeldung.com
 
-[baeldung](https://www.baeldung.com/spring-boot) 不仅提供了[示例代码 tutorials](https://github.com/eugenp/tutorials/tree/master/spring-boot-modules)，还有系列的学习文章：
+[baeldung](https://www.baeldung.com/spring-boot) 同时提供了[示例代码 tutorials](https://github.com/eugenp/tutorials/tree/master/spring-boot-modules) 和系列文章：
 
 - Spring Boot - Basics  
 [spring-vs-spring-boot](https://www.baeldung.com/spring-vs-spring-boot)  
