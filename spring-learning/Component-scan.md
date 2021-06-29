@@ -24,8 +24,8 @@ e.g. the {@link Repository @Repository} annotation or AspectJ's
 `@Component` 是通用的原型注解（stereotype annotation），其他原型注解，如 @Repository、@Service 和 @Controller 是 @Component 的特例化；  
 `@Component`、`Repository` 、`Service` 和 `Controller` 均是由 `org.springframework.context.annotation.ClassPathBeanDefinitionScanner` 处理。
 
-## Bean 的名称
-AnnotationBeanNameGenerator 名字生成器，如果不指定 Component 的 value 属性，默认 bean name 为短类名，详见 `java.beans.Introspector#decapitalize`，例如
+## Bean 名称
+工具类 AnnotationBeanNameGenerator 作为名字生成器，如果不指定 `@Component` 的 value 属性，默认 bean name 为短类名，详见 `java.beans.Introspector#decapitalize`，例如
 
 `java.example.MyRepository` 的 bean 名称为 myRepository  
 `java.example.DTMRepository` 的 bean 名称为 DTMRepository
@@ -49,14 +49,14 @@ AnnotationBeanNameGenerator 名字生成器，如果不指定 Component 的 valu
 
 `@ComponentScan` 或者 `<context:component-scan/>` 会开启 Spring 基于类路径的自动扫描。
 
-[Bean-classpath-scanning](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-classpath-scanning)
+[Bean-classpath-scanning](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-classpath-scanning)：
 >The use of <context:component-scan> implicitly enables the functionality of <context:annotation-config>. There is usually no need to include the <context:annotation-config> element when using <context:component-scan>.
 
 ## Auto-configuration
 
 `@EnableAutoConfiguration` 是 SpringBoot 提供，不在 Spring Framework 核心包中。
 
-引用自文献<sup>[3]</sup>：
+引用自文献<sup>[2]</sup>：
 >Spring Boot auto-configuration attempts to automatically configure your Spring application based on the jar dependencies that you have added. For example, if HSQLDB is on your classpath, and you have not manually configured any database connection beans, then Spring Boot auto-configures an in-memory database.
 
 ```Java 
@@ -82,5 +82,4 @@ public @interface EnableAutoConfiguration {
 
 # REF
 1. [spring-component-scanning](https://reflectoring.io/spring-component-scanning/)
-2. [Annotation-based Container Configuration](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-annotation-config)
-3. [Auto-configuration](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#using.auto-configuration)
+2. [Auto-configuration](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#using.auto-configuration)
