@@ -39,8 +39,10 @@ spring.config.location > spring.profiles.active > spring.config.additional-locat
 - @TestPropertySource("classpath:application-test.properties")
 只用于测试，在 Spring 配置类上标记，可以激活 application-test.properties 配置
 
--- @Profile("dev")
-@Profile：指定组件在哪个环境下注册到容器中
+## Profile 注解
+
 - 注解普通 Bean，只有指定环境时，Bean 才能注册到容器中；
-- 注解配置类，只有指定环境时，整个配置类里面的所有配置才能生效；
+- 注解配置类，只有指定环境时，整个配置类中的所有配置才能生效；
+
+例如 `@Profile("dev")`：在 dev 环境下组件才注册到容器中。
 
