@@ -17,7 +17,7 @@ nohup /Library/Java/JavaVirtualMachines/jdk1.8.0_171.jdk/Contents/Home/bin/java 
 3. 小心翼翼的添加上 nohup、debug 等参数；
 3. 把修改后信息粘贴在 bash 等终端上回车执行；
 
-其中 2、3 步骤不够简洁，尤其是第 3 步简直是一次指尖苦力，我们可以借助 Alfred workflows 在粘贴板中替换 2、3 步。
+其中 2、3 步骤不够简洁，尤其第 3 步简直是一次指尖苦力，我们可以借助 Alfred workflows 在粘贴板中替换 2、3 步。
 
 ## Alfred 
 Alfred 是 Mac 下一款效能工具，提供便捷搜索、唤起程序、粘贴板等功能，这里介绍编写一个 Alfred workflows 插件来提高调试程序的效率。
@@ -44,7 +44,7 @@ start=false
 add=false
 for ((idx=0; idx<len; ++idx)); do
     param=${query[idx]}
-    #中间件隐去一些增加健壮性的判断代码
+    #中间隐去一些增加健壮性的判断代码
     if [ "$add" == "false" ]; then
        result="$result ${param} -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000 "
        add=true
@@ -62,7 +62,7 @@ echo -n $result | pbcopy
 ## 课外：不同 Java 版本的 Debug 参数
 对于 Java5 以上版本，debug 参数：
 `-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000`  
-而 Java5 及更低版本，dubug 参数：
+而 Java5 及更低版本，dubug 参数<sup>[1]</sup>：
 `-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8000`
 
 # Ref
