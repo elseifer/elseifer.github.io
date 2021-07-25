@@ -1,5 +1,5 @@
 # Getting-started
-golang 入门，以 Mac 环境演示。
+Golang 入门，以 Mac 环境演示。
 
 ## Install
 

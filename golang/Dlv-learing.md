@@ -134,7 +134,7 @@ dlv attach 16591 --continue --headless --accept-multiclient --listen=:8181
 dlv connect 127.0.0.1:8181
 ```
 
-**注意**：在 connect 上后目标程序即刻被暂停
+**注意**：在 connect 上时目标进程即刻被暂停
 
 ### attach正在运行的程序
 
@@ -183,7 +183,7 @@ ps -ef|grep -v grep |grep demo.exe
 gops |grep demo.exe
 ```
 
-- 步骤4： attach 进程
+- 步骤4：attach 进程
 
 以非 headless 模式 attach 到 16250 进程上，并出现 dlv 用户交互界面：
 ```shell
@@ -191,6 +191,7 @@ gops |grep demo.exe
 Type 'help' for list of commands.
 (dlv)
 ```
+**注意**：在 attach 上时目标进程即刻被暂停
 
 ### 修改程序运行状态
 dlv 交互界面支持以命令的方式调试程序。
@@ -208,7 +209,7 @@ bp
 
 3.继续程序直到下一个断点  
 ```
-continueq
+continue
 ```
 
 4.修改变量的值  
@@ -229,9 +230,9 @@ clearall
 
 ## 4.More
 
-### Goland集成attach
-对于 remote attatch，我们可以在 goland 中集成 gops <sup>3</sup> 工具。
-gops 由 google 官方提供，用于查看和诊断正在运行的 go 程序进程<sup>4</sup>。
+### Goland集成Attach
+对于 remote attatch，我们可以在 Goland 中集成 gops <sup>3</sup> 工具。
+gops 由 Google 官方提供，用于查看和诊断正在运行的 go 程序进程<sup>4</sup>。
 
 >gops is a command to list and diagnose Go processes currently running on your system.
 
@@ -240,11 +241,21 @@ gops 由 google 官方提供，用于查看和诊断正在运行的 go 程序进
 go get -t github.com/google/gops/
 ```
 
-之后重启 goland，工具栏出现 **Run | Attach to Process**(`⌥⇧F5`)：
+之后重启 Goland，工具栏出现 **Run | Attach to Process**(`⌥⇧F5`)：
 ![](./images/goland-gops.jpg)
 
-运行 `./demo.exe`，尝试下 `⌥⇧F5`：
+运行 `./demo.exe` 再尝试下 `⌥⇧F5`：
 ![](./images/gops-attach.jpg)
+
+此时 demo.go 上断点命中了，Debug Console 打印出 dlv attach 提示：
+![](./images/gops-debug.jpg)
+
+这说明 Attach to Process 至少做了以下几件事：
+- 获取指定 go 进程的PID
+- 以 headless 模式 attach 指定 PID
+- connect 到 debug 会话
+
+这里留一个疑问：为什么 Attach to Process 在没有指定 `--continue` 下，目标进程没有暂停，除非命中断点？
 
 # REF
 
