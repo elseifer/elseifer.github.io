@@ -1,9 +1,9 @@
 # dlv leanring
 
-dlv 全称 [delve](https://github.com/go-delve/delve) ，它是一款面向 golang 语言的调试工具。
+dlv 全称 [delve](https://github.com/go-delve/delve) ，它是一款面向 golang 语言的调试工具（图片来自 dlv 官网）。
 ![](https://raw.githubusercontent.com/go-delve/delve/master/assets/delve_horizontal.png)
 
-以下以 Mac 环境为示例。
+以下以 Mac 环境演示，为降低 dlv 使用过程中的权限询问打扰，查看 DevToolsSecurity 当前状态 `DevToolsSecurity -status`，将其打开 `sudo /usr/sbin/DevToolsSecurity -enable`。
 
 ## 1.Install
 
@@ -53,7 +53,7 @@ alias dlv='$GOBIN/dlv'
 ```
 再 source 以生效配置
 ```shell
-source ~/.profile 
+source ~/.profile
 ```
 
 当然，也可以在 `/usr/local/bin` 目录下创建一个链接指向 `$GOBIN/dlv`：
@@ -63,11 +63,11 @@ ln -s $GOBIN/dlv /usr/local/bin/dlv
 
 ## 2.Usage
 
-上面我们已经体验了 version 命令和 -h 选项，下面详细了解下 dlv 支持的选项和命令。
+上面我们已经体验了 version 命令和 -h 选项，dlv 支持的选项和命令远不止这些。
 
 ### Options
 
-下面 Options 是全局级别的，通过 `dlv -h` 获取帮助，同时具体的 dlv command 也会有自己独有的 Options ，通过 `dlv [command] -h` 获取。
+下面 Options 是全局级别的，通过 `dlv -h` 获取帮助，同时具体的 dlv command 也会有自己独有的 Options ，通过 `dlv [command] -h` 获取<sup>2</sup>。
 
 ```
 --accept-multiclient               Allows a headless server to accept multiple client connections.
