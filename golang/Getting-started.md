@@ -1,5 +1,5 @@
 # Getting-started
-Mac 环境的 Goland 的入门
+golang 入门，以 Mac 环境演示。
 
 ## Install
 
@@ -49,16 +49,17 @@ sudo automount -vc
 ```
 
 ## Mac环境变量
+全局：
+- /etc/paths.d
+- /etc/paths
+- /etc/profile
+- /etc/bashrc
 
-/etc/paths.d
-/etc/paths
-/etc/profile
-/etc/bashrc
-
-.profile
-.bashrc
-.bash_profile
-
+当前用户：
+- .profile
+- .bashrc
+- .bash_profile
+- .zshrc
 
 ## REF
 
