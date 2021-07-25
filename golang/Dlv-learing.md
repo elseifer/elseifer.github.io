@@ -122,23 +122,23 @@ ln -s $GOBIN/dlv /usr/local/bin/dlv
 attach 默认暂停程序的执行，可设置 `--continue` 选项让 attach 不阻塞程序执行。
 > --continue   Continue the debugged process on start.
 
-开启一个不暂停目标程序、无交互界面模式的 debug 会话，会话端口为 8181（未指定 `--listen` 时端口由系统分配）。
+开启一个不暂停目标程序、无交互界面模式的 debug 会话，端口为 8181
 ```shell
 dlv attach 16591 --continue --headless --accept-multiclient --listen=:8181
 ```
 
-**注意**：指定 `--continue` 时必须搭配 `--headless`
+**注意**：指定 `--continue` 时必须搭配 `--headless`，未指定 `--listen` 时端口由系统分配
 
-连接上已开启的 8181 会话。
+连接上已开启的 8181 会话
 ```shell
 dlv connect 127.0.0.1:8181
 ```
 
-**注意**：在 connect 上后目标程序即可被暂停
+**注意**：在 connect 上后目标程序即刻被暂停
 
 ### attach正在运行的程序
 
-编写一个 demo 程序
+- 步骤1：编写一个 demo 程序
 ```go
 package main
 
@@ -160,17 +160,20 @@ func main() {
 }
 ```
 
-编译 demo.go 为可执行程序 demo.exe，这里的 .exe 并无实际意思
+- 步骤2：编译&运行
+
+编译 demo.go 为可执行程序 demo.exe，这里的 .exe 并无实际意义
 ```shell
 go build -v -o demo.exe demo.go
 ```
 
-运行 demo.exe 并查看进程 PID，例如 16250
+运行 demo.exe
 ```shell
 ./demo.exe
 ```
+- 步骤3：查看进程PID
 
-使用 ps 查看进程 PID，第二列为 PID
+使用 ps 查看进程 PID，第二列为 PID，如 16250
 ```
 ps -ef|grep -v grep |grep demo.exe
 ```
@@ -180,6 +183,8 @@ ps -ef|grep -v grep |grep demo.exe
 gops |grep demo.exe
 ```
 
+- 步骤4： attach 进程
+
 以非 headless 模式 attach 到 16250 进程上，并出现 dlv 用户交互界面：
 ```shell
 >dlv attach 16250
@@ -188,7 +193,7 @@ Type 'help' for list of commands.
 ```
 
 ### 修改程序运行状态
-在 dlv 交互界面可以以命令的方式调试程序：
+dlv 交互界面支持以命令的方式调试程序。
 
 1.新增一个断点  
 ```
