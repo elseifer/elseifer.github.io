@@ -194,9 +194,10 @@ Type 'help' for list of commands.
 
 **注意**：在 attach 上时目标进程即刻被暂停
 
+#### 如何通信
 非 headless 模式下 dlv command 如何到达 debug server 的，他们交互或通信机制是什么？
 
-也是通过 debug 端口，只是非 headless 模式下，指定 `-l` 或 `--listen` 无效，debug 端口随机分配
+也是通过 debug 端口，只是非 headless 模式下，指定 `-l` 或 `--listen` 无效，debug 端口随机分配。
 
 ![](./images/debugserv.jpg)
 
