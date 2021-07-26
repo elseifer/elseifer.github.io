@@ -192,10 +192,19 @@ Type 'help' for list of commands.
 (dlv)
 ```
 
-**注意1**：非 headless 不会打开 debug 端口，即使指定了 `-l` 或 `--listen`  
-**注意2**：在 attach 上时目标进程即刻被暂停
+**注意**：在 attach 上时目标进程即刻被暂停
 
-这里留一个疑问：非 headless 模式下，dlv command 如何到达 debug server的，交互或通信机制是什么？
+非 headless 模式下 dlv command 如何到达 debug server 的，他们交互或通信机制是什么？
+
+也是通过 debug 端口，只是非 headless 模式下，指定 `-l` 或 `--listen` 无效，debug 端口随机分配
+
+![](./images/debugserv.jpg)
+
+非 headless 模式下查看 debug 端口
+```
+lsof -Pitcp -stcp:established  |grep dlv 
+lsof -Pitcp -stcp:established  |grep [dlv-pid]
+```
 
 ### 修改程序运行状态
 dlv 交互界面支持以命令的方式调试程序。
