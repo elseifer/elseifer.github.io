@@ -197,14 +197,15 @@ Type 'help' for list of commands.
 #### 如何通信
 非 headless 模式下 dlv command 如何到达 debug server 的，他们交互或通信机制是什么？
 
-也是通过 debug 端口，只是非 headless 模式下，指定 `-l` 或 `--listen` 无效，debug 端口随机分配。
+~~也是通过 debug 端口，只是非 headless 模式下，指定 `-l` 或 `--listen` 无效，debug 端口随机分配~~
 
+存在一个 debugserv 进程，跨进程间通过端口的方式。在非 headless 模式下指定 `-l` 或 `--listen` 无效，不会开启 debug 端口。
 ![](./images/debugserv.jpg)
 
-非 headless 模式下查看 debug 端口
+上面使用的命令：
 ```
-lsof -Pitcp -stcp:established  |grep dlv 
-lsof -Pitcp -stcp:established  |grep [dlv-pid]
+lsof -Pitcp -stcp:established | grep dlv 
+lsof -Pitcp -stcp:established | grep [port]
 ```
 
 ### 修改程序运行状态
