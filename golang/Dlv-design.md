@@ -66,7 +66,9 @@ netstat -v -p tcp |grep [pid]
 同时我们观察到 debugserver 的 PID 显示为 **46706** ，这与 demo.exe 进程的 PPID 46706 相同。
 
 4. 梳理下链接
+
 除了 8181 是我们指定外，其余端口都是 dlv 自行占用
+
 ![](./images/dlv-port.png)
 
 ### 实践2：非headless模式
@@ -81,6 +83,7 @@ dlv attach 49264
 2. 查看 dlv 进程的网络连接
 
 dvl 进程和网络连接：
+
 ![](./images/debugserv.jpg)
 
 我们再次观察到 debugserver 的 PID 48330 与 demo.exe 进程的 PPID 49330 相同。
@@ -115,7 +118,7 @@ dvl 进程和网络连接：
 attach 前后 demo.exe 的 PPID 发生了变化，从 zsh 进程变为 debugserv 进程。
 
 到此我依据进程和网络连接猜测：
-*--attach=50879* 是 demo.exe 的进程 PID，*127.0.0.1:59828* 是 dlv attach 的监听地址
+*--attach=50879* 是 demo.exe 的进程 PID，*127.0.0.1:59828* 是 dlv attach 的监听地址。
 
 按照 *Resources/debugserver -R* 关键词在 Google 苦苦寻找并未找到有用的信息，经验猜测 *-R* 应该是某个关键词 *--r* 的缩写，于是我扩大了关键词 *lldb debugserver --r* 浏览到 *lldb reverse-connect* 一个相关搜索记录，令人眼前一亮，于是按照 *lldb reverse-connect* 关键词，我最终在 llvm org、github 中找到了答案。
 
