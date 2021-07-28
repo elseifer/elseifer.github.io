@@ -97,7 +97,7 @@ dvl 进程和网络连接：
 
 ## 3.进程debugserv为何物
 
-`ps -ef|grep debugserv` 我们得到进程信息，可以大致猜测下它是 LLDB 的工具，结合 delve 设计结构<sup>1</sup>一文，我们还可以猜测它和 lldb-server 有关。
+`ps -ef|grep debugserv` 得到进程信息，结合 delve 设计结构<sup>1</sup>一文，我们还可以猜测它和 lldb 有关。
 ```
 /Library/Developer/CommandLineTools/Library/PrivateFrameworks/LLDB.framework/Versions/A/Resources/debugserver -R 127.0.0.1:59828 --attach=50879
 ```
@@ -117,19 +117,23 @@ dvl 进程和网络连接：
 
 attach 前后 demo.exe 的 PPID 发生了变化，从 zsh 进程变为 debugserv 进程。
 
-到此我依据进程和网络连接猜测：
+同时我稍加观察可以发现 debugserv 进程的 PPID **50921** 恰巧是 dlv attach 的 PID 50921，我们大致猜测 debugserv 进程由 dlv 进程创建。
+
+到这里，我们进一步猜测 debugserv 进程的参数作用：
 *--attach=50879* 是 demo.exe 的进程 PID，*127.0.0.1:59828* 是 dlv attach 的监听地址。
 
-按照 *Resources/debugserver -R* 关键词在 Google 苦苦寻找并未找到有用的信息，经验猜测 *-R* 应该是某个关键词 *--r* 的缩写，于是我扩大了关键词 *lldb debugserver --r* 浏览到 *lldb reverse-connect* 一个相关搜索记录，令人眼前一亮，于是按照 *lldb reverse-connect* 关键词，我最终在 llvm org、github 中找到了答案。
+在 Google 搜索 *Resources/debugserver -R* 关键词未果后，依据经验我猜测 *-R* 应该是某个关键词 *--r* 的缩写，于是调整关键词为 *lldb debugserver --r*，一条 *lldb reverse-connect* 相关记录令人眼前一亮，按照 *lldb reverse-connect* 关键词，我最终在 llvm org、github 中找到了答案。
 
--R 扭转了连接方向，由 debugserver 主动去连接 client 的地址。
+*-R* 扭转了连接方向，由 debugserver 主动去连接 client 的地址<sup>[2]</sup>。
 >--reverse-connect  
-   Connect to the client instead of passively waiting for a connection. In this case, [host]:port denotes the remote address to connect to.<sup>[2]</sup>
+   Connect to the client instead of passively waiting for a connection. In this case, [host]:port denotes the remote address to connect to.
 
 *-R* 即 *--reverse-connect*<sup>[3]</sup> 
 
 ## 4.End
-到此我们应该对 dlv 和 debug server [如何通信](./Dlv-learning#如何通信)的疑问
+到此我们应该对 dlv 和 debug server [如何通信](./Dlv-learning#如何通信)的疑问。
+
+这个过程没有 delve 代码分析，从猜测到确认答案是通过一点点观察和翻文档，获取信息效率并不高，后面我们将以阅读代码的方式来理解 delve。
 
 # REF
 
