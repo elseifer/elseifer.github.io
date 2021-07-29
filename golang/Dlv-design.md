@@ -10,7 +10,7 @@
 | 2    |  Symbolic Layer | knows about line numbers, types, variable names, etc. |
 | 3    |  Target Layer | controls target process,doesn’t know anything about your source code. |
 
-不过这是一个简化模型，在[Dlv 初步学习](./Dlv-learning#如何通信)中，我们了解到存在着一个 dvl 到 debugserver 的相互通信链路，在「Architecture of Delve slides」中 Delve 设计者们确实是这么设计的：
+不过这是一个简化模型，在[Dlv 初步学习](./Dlv-learning.md#如何通信)中，我们了解到存在着一个 dvl 到 debugserver 的相互通信链路，在「Architecture of Delve slides」中 Delve 设计者们确实是这么设计的：
 
 ![](./images/architecture-of-dlv.jpg)
 
@@ -131,9 +131,9 @@ attach 前后 demo.exe 的 PPID 发生了变化，从 zsh 进程变为 debugserv
 *-R* 即 *--reverse-connect*<sup>[3]</sup> 
 
 ## 4.End
-到此我们应该对 dlv 和 debug server [如何通信](./Dlv-learning#如何通信)的疑问。
+到此我们围绕 [dlv 和 debug server 如何通信](./Dlv-learning.md#如何通信)的疑问对 delve 的设计结构进行了实践认识。
 
-这个过程没有 delve 代码分析，从猜测到确认答案是通过一点点观察和翻文档，获取信息效率并不高，后面我们将以阅读代码的方式来理解 delve。
+这个过程没有结合 delve 代码分析，从猜测到确认答案是通过一点点观察和翻文档，获取信息效率并不高，后面我们将以阅读代码的方式来理解 delve。
 
 # REF
 
