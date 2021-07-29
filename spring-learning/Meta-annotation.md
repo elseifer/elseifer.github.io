@@ -64,4 +64,4 @@ public class SessionScopedUserService implements UserService {
 For further details, see the [Spring Annotation Programming Model](https://github.com/spring-projects/spring-framework/wiki/Spring-Annotation-Programming-Model) wiki page.
 
 # Ref
-1. [Spring Framework Documentation](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#spring-core)
+1.[Spring Framework Documentation](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#spring-core)

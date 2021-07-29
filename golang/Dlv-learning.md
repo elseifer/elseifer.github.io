@@ -20,7 +20,12 @@ go install github.com/go-delve/delve/cmd/dlv
 go install github.com/go-delve/delve/cmd/dlv@latest
 ```
 
-dlv 将安装在 GOBIN 目录，GOBIN 默认为 `$GOPATH/bin`，如 GOPATH 未设置则默认为 `$HOME/go/bin`，关于 [Go 环境变量](./Getting-started#环境变量)。
+dlv 将安装在 GOBIN 目录，GOBIN 默认为 `$GOPATH/bin`，如 GOPATH 未设置则默认为 `$HOME/go/bin`，关于 [Go 环境变量配置](./Getting-started.md#环境变量)。
+
+>$go help install  
+Executables are installed in the directory named by the GOBIN environment
+variable, which defaults to $GOPATH/bin or $HOME/go/bin if the GOPATH
+environment variable is not set.
 
 如果安装报错 `"https://proxy.golang.org/github.com/cosiner/argv/@v/v0.1.0.mod": dial tcp 172.217.160.113:443: i/o timeout` 设置下 GOPROXY 即可：
 
@@ -119,9 +124,9 @@ ln -s $GOBIN/dlv /usr/local/bin/dlv
 
 `dlv backend` - Help about the --backend flag
 
-## 3.实操attach
+## 3.实操dlv attach
 
-attach 默认暂停程序的执行，可设置 `--continue` 选项让 attach 不阻塞程序执行。
+`dlv attach` 默认暂停程序的执行，可设置 `--continue` 选项让 attach 不阻塞程序执行<sup>[5]</sup>。
 > --continue   Continue the debugged process on start.
 
 开启一个不暂停目标程序、无交互界面模式的 debug 会话，端口为 8181
@@ -283,3 +288,5 @@ go get -t github.com/google/gops/
 3.[Attach to running Go processes with the debugger](https://www.jetbrains.com/help/go/attach-to-running-go-processes-with-debugger.html)
 
 4.[google gops](https://github.com/google/gops/)
+
+5.[Allow attaching to a process without pausing the execution](https://github.com/go-delve/delve/issues/245)

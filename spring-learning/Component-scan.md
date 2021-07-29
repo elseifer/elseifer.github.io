@@ -21,7 +21,8 @@ e.g. the {@link Repository @Repository} annotation or AspectJ's
 - 当启用基于注解配置、类路径扫描时，被其注解的类会被自动检测的；
 - 如果类被 @Repository、@Aspect 标记，也会被当做 spring 组件；
 
-`@Component` 是通用的原型注解（stereotype annotation），其他原型注解，如 @Repository、@Service 和 @Controller 是 @Component 的特例化；  
+`@Component` 是通用的原型注解（stereotype annotation），其他原型注解，如 `@Repository`、`@Service` 和 `@Controller` 是 `@Component` 的特例；  
+
 `@Component`、`Repository` 、`Service` 和 `Controller` 均是由 `org.springframework.context.annotation.ClassPathBeanDefinitionScanner` 处理。
 
 ## Bean 名称
@@ -49,16 +50,17 @@ e.g. the {@link Repository @Repository} annotation or AspectJ's
 
 `@ComponentScan` 或者 `<context:component-scan/>` 会开启 Spring 基于类路径的自动扫描。
 
-[Bean-classpath-scanning](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-classpath-scanning)：
+[Bean-classpath-scanning](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-classpath-scanning):
+
 >The use of <context:component-scan> implicitly enables the functionality of <context:annotation-config>. There is usually no need to include the <context:annotation-config> element when using <context:component-scan>.
 
 ## Auto-configuration
 
-`@EnableAutoConfiguration` 是 SpringBoot 提供，不在 Spring Framework 核心包中。
+[auto-configuration](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#using.auto-configuration):
 
-引用自文献<sup>[2]</sup>：
->Spring Boot auto-configuration attempts to automatically configure your Spring application based on the jar dependencies that you have added. For example, if HSQLDB is on your classpath, and you have not manually configured any database connection beans, then Spring Boot auto-configures an in-memory database.
+>Spring Boot auto-configuration attempts to automatically configure your Spring application based on the jar dependencies that you have added.
 
+`@EnableAutoConfiguration` 是 SpringBoot 提供，不在 Spring Framework 核心包中，如下是它的定义：
 ```Java 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
@@ -78,8 +80,8 @@ public @interface EnableAutoConfiguration {
 
 其中最重要的是 `@Import(AutoConfigurationImportSelector.class)` 注解，借助 `AutoConfigurationImportSelector`，`@EnableAutoConfiguration` 帮助 Spring Boot 应用将所有符合条件的 `@Configuration` 配置加载到当前IoC容器中。
 
-而其中关键是 AutoConfigurationImportSelector 借助 Spring 的工具类 `SpringFactoriesLoader` 加载了 `META-INF/spring.factories` 配置，`spring.factories` 文件是一个典型的 properties 配置文件，格式仍然是 `Key=Value` 的形式，不过 Key 和 Value 均是 Java 的全限定类名，比如：`org.springframework.data.repository.core.support.RepositoryFactorySupport=org.springframework.data.jpa.repository.support.JpaRepositoryFactory`。
+ AutoConfigurationImportSelector 借助 Spring 的工具类 `SpringFactoriesLoader` 加载了 `META-INF/spring.factories` 配置。
+ 
+ `spring.factories` 文件是一个典型的 properties 配置文件，格式仍然是 `Key=Value` 的形式，不过 Key 和 Value 均是 Java 的全限定类名，比如：`org.springframework.data.repository.core.support.RepositoryFactorySupport=org.springframework.data.jpa.repository.support.JpaRepositoryFactory`。
 
 # REF
-1. [spring-component-scanning](https://reflectoring.io/spring-component-scanning/)
-2. [Auto-configuration](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#using.auto-configuration)

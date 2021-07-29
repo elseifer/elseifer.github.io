@@ -1,12 +1,19 @@
 
 [![license](https://img.shields.io/badge/license-Apache--2.0-green.svg)](https://raw.githubusercontent.com/elseifer/elseifer.github.io/master/LICENSE)
 
-### About
+一些个人记录，仅供参考。
 
-- [golang](golang)
+- golang
   - [Golang: Getting Started](golang/Getting-started.md)
-  - [Delve: Getting Started](golang/Dlv-design.md)
+  - [Delve: Getting Started](golang/Dlv-learning.md)
   - [Delve: Dlv Design](golang/Dlv-design.md)
   - [Delve: Code Reading](golang/Dlv-Code-Reading.md)
-- [spring](spring-learning)
-  - [What is IoC](spring-learning/What-is-IoC.md)
+- 效能工具
+  - [alfred workflow](smart-tools/debug-with-alfred-workflow.md)
+  - [Git 基本使用](smart-tools/Git-Usage.md)
+- spring
+  - [IoC 基本概念](spring-learning/What-is-IoC.md)
+  - [Profile 机制](spring-learning/Profile.md)
+  - [Spring 配置类](spring-learning/Configuration.md)
+- Java&Jdk
+  - [代码中的 Java 兼容性问题](jdk-compatibility/Java-Compatibility.md)
