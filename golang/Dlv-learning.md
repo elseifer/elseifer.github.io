@@ -3,7 +3,9 @@
 dlv 全称 [delve](https://github.com/go-delve/delve) ，它是一款面向 golang 语言的调试工具（图片来自 dlv 官网）。
 ![](https://raw.githubusercontent.com/go-delve/delve/master/assets/delve_horizontal.png)
 
-以下以 Mac 环境演示，为降低 dlv 使用过程中的权限询问打扰，查看 DevToolsSecurity 当前状态 `DevToolsSecurity -status`，将其打开 `sudo /usr/sbin/DevToolsSecurity -enable`。
+以 Mac 环境演示，go version go1.16.3 darwin/amd64。
+
+为降低 dlv 使用过程中的权限询问打扰，查看 DevToolsSecurity 当前状态 `DevToolsSecurity -status`，将其打开 `sudo /usr/sbin/DevToolsSecurity -enable`。
 
 ## 1.Install
 
@@ -13,7 +15,7 @@ git clone https://github.com/go-delve/delve
 cd delve
 go install github.com/go-delve/delve/cmd/dlv
 ```
-或者
+或者（go version 不低于 1.16）
 ```shell
 go install github.com/go-delve/delve/cmd/dlv@latest
 ```
