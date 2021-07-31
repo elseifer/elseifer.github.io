@@ -185,7 +185,7 @@ go build -v -o demo.exe demo.go
 ps -ef|grep -v grep |grep demo.exe
 ```
 
-或者使用 gops 查看进程 PID<sup>4</sup>，第一列为 PID
+或者使用 gops<sup>4</sup> 查看进程 PID，第一列为 PID
 ```
 gops |grep demo.exe
 ```

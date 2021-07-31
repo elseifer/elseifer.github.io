@@ -23,14 +23,18 @@
 ### 实践1：headless模式
 
 1. 以  headless 模式 attach 目标进程
+
+终端1中运行 `./demo.exe`，进程 PID 43649（获取[进程 PID](./Dlv-learning.md#attach正在运行的程序)），再新启终端2运行如下命令：
 ```
 dlv --headless --listen=:8181 attach 43649
 ```
 
-使用 `gops` 查看 dlv 进程，记住 dlv attach 进程 PID **46703**，目标进程 demo.exe 的进程 PID **43694**，PPID **44706**
+使用 `gops` 查看进程，记住 dlv attach 进程 PID **46703**，目标进程 demo.exe 的进程 PID **43694**，PPID **44706**
 ![](./images/gops-dlv-attach.jpg)
 
 2. 连接上 8181 debug 会话
+
+新启终端3运行如下命令：
 ```
 dlv connect 127.0.0.1:8181
 ```
@@ -74,11 +78,8 @@ netstat -v -p tcp |grep [pid]
 ### 实践2：非headless模式
 
 1. 以  headless 模式 attach 目标进程
-```
-./demo.exe
 
-dlv attach 49264
-```
+终端1中运行 `./demo.exe`，进程 PID 49264，再新启终端2运行 `dlv attach 49264`
 
 2. 查看 dlv 进程的网络连接
 
@@ -86,7 +87,7 @@ dlv 进程（只有一个）和网络连接：
 
 ![](./images/debugserv.jpg)
 
-我们再次观察到 debugserver 的 PID 48330 与 demo.exe 进程的 PPID 49330 相同。
+我们再次观察到 debugserver 的 PID **48330** 与 demo.exe 进程的 PPID 49330 相同。
 
 3. 梳理下链接
 
@@ -105,9 +106,9 @@ dlv 进程（只有一个）和网络连接：
 为何 demo.exe 进程的父进程会是 debugserv？
 
 - PID 是程序被操作系统加载到内存成为进程后动态分配的资源，它是唯一的；
-- PPID（parent process ID）：PPID是父进程号；
+- PPID 是 PPID是父进程号 parent process ID；
 - 一个进程创建的另一个新进程称为子进程，创建子进程的进程称为父进程；
-- 对于一个普通的用户进程，其父进程是执行它的Shell，例如 bash、zsh 等；
+- 对于一个普通的用户进程，其父进程是执行它的 shell，例如 bash、zsh 等，多个 shell 会话窗口是不同的 shell 进程；
 - 所有进程追溯其祖先最终会到进程号为1的进程上，这个进程为 init 进程；
 - init 进程是 Linux 内核启动后第一个执行的进程；
 

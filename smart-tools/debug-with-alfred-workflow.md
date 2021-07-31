@@ -52,7 +52,7 @@ for ((idx=0; idx<len; ++idx)); do
        result="$result ${param} "
     fi
 done
-result="$result &>out.log &"
+result="nohup $result &>out.log &"
 echo -n $result | pbcopy
 ```
 
