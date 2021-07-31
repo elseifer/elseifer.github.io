@@ -1,5 +1,5 @@
 # Delve 设计
-依然以 Mac 环境为例。
+依然以 Mac 环境演示，go version go1.16.3 darwin/amd64
 
 ## 1.结构
 开始之前，我们先了解下 delve 设计结构<sup>1</sup>
@@ -14,7 +14,7 @@
 
 ![](./images/architecture-of-dlv.jpg)
 
-**疑问**：在没有 Goland、Gdlv 等等可视化用户界面时，Dlv Program Promt 充当了 UI Layer ？
+**疑问**：在没有 Goland、Gdlv 等等可视化用户界面时，Cmd Promt 充当了 UI Layer ？
 我理解是这样。
 
 ## 2.实践观察
@@ -82,7 +82,7 @@ dlv attach 49264
 
 2. 查看 dlv 进程的网络连接
 
-dvl 进程和网络连接：
+dlv 进程（只有一个）和网络连接：
 
 ![](./images/debugserv.jpg)
 
@@ -139,6 +139,6 @@ attach 前后 demo.exe 的 PPID 发生了变化，从 zsh 进程变为 debugserv
 
 1.[Architecture of Delve slides](https://speakerdeck.com/aarzilli/internal-architecture-of-delve)
 
-2.https://lldb.llvm.org/man/lldb-server.html
+2.[https://lldb.llvm.org/man/lldb-server.html](https://lldb.llvm.org/man/lldb-server.html)
 
 3.[llgs: add --reverse-connect support](https://github.com/llvm/llvm-project/commit/31bde322f374582d7106f0c847b0ff3b6b6d705b)

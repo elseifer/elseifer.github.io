@@ -1,10 +1,8 @@
 # Code Reading
 
-依然以 MacOS 环境讲解，go version go1.16.3 darwin/amd64。
+继续对 [Dlv 设计结构](./Dlv-design.md) 进行探索，这次主要以代码分析为主，delve 代码阅读以 commitId aaed14ff 为止，以 Mac 环境为主要讨论场景。
 
-本文引用的英文说明和 delve 代码较多，如果没有特别注释则默认来自 https://github.com/go-delve/delve 和 Architecture of Delve slides<sup>1</sup>。
-
-代码阅读 commitId aaed14ff 为止。
+本文引用的英文说明和 delve 代码较多，如果没有特别注释则默认来自 [https://github.com/go-delve/delve](https://github.com/go-delve/delve) 和 Architecture of Delve slides<sup>1</sup>。
 
 ## Target Layer
 
@@ -105,7 +103,7 @@ func LLDBAttach(pid int, path string, debugInfoDirs []string) (*proc.Target, err
 }
 ```
 
-在 `debugger.go` 中调用了 `LLDBAttach` 方法，要追溯调用的源头，那就到了 `cmd/dlv/main.go:24` 行。
+`LLDBAttach` 方法由 `debugger.go` 中调用。如果追溯调用的源头，那就到了 `cmd/dlv/main.go:24` 行，这个调用流程会在[ DLV 启动流程](./Dlv-startup-process.md)中详细介绍。
 
 `service/debugger/debugger.go:144` 行：
 ```golang
@@ -121,12 +119,14 @@ func New(config *Config, processArgs []string) (*Debugger, error) {
 
 	// Create the process by either attaching or launching.
 	switch {
+	//有传递进程 PID 则进入该分支
 	case d.config.AttachPid > 0:
 		d.log.Infof("attaching to pid %d", d.config.AttachPid)
 		path := ""
 		if len(d.processArgs) > 0 {
 			path = d.processArgs[0]
 		}
+		//调用 debugger.Attach
 		p, err := d.Attach(d.config.AttachPid, path)
 		if err != nil {
 			err = go11DecodeErrorCheck(err)
@@ -145,10 +145,10 @@ func (d *Debugger) Attach(pid int, path string) (*proc.Target, error) {
 	    //由编译器来决定
 		return native.Attach(pid, d.config.DebugInfoDirectories)
 	case "lldb":
-		//选择 lldb
+		//选择 lldb，调用 gdbserver.LLDBAttach 方法
 		return betterGdbserialLaunchError(gdbserial.LLDBAttach(pid, path, d.config.DebugInfoDirectories))
 	case "default":
-		//操作系统为 macos
+		//操作系统为 macos 时，调用 gdbserver.LLDBAttach 方法
 		if runtime.GOOS == "darwin" {
 			return betterGdbserialLaunchError(gdbserial.LLDBAttach(pid, path, d.config.DebugInfoDirectories))
 		}
@@ -159,8 +159,10 @@ func (d *Debugger) Attach(pid int, path string) (*proc.Target, error) {
 	}
 }
 ```
-`native.Attach(pid, d.config.DebugInfoDirectories)` 在 
-`pkg/proc/native/nonative_darwin.go`、`pkg/proc/native/proc_linux.go`、`pkg/proc/native/proc_windows.go` 这 3 个文件中定义了。
+`native.Attach(pid, d.config.DebugInfoDirectories)` 在 3 个文件中定义了：
+- pkg/proc/native/nonative_darwin.go
+- pkg/proc/native/proc_linux.go
+- pkg/proc/native/proc_windows.go
 
 对此 Golang 编译器会依据操作系统类型来选择它们中的其中一个进行编译，例如 `nonative_darwin.go` 的头部声明如下内容：
 ```go
@@ -183,6 +185,6 @@ package native
 
 # REF
 
-1.https://speakerdeck.com/aarzilli/internal-architecture-of-delve
+1.[Architecture of Delve](https://speakerdeck.com/aarzilli/internal-architecture-of-delve)
 
-2.https://golang.org/cmd/go/
+2.[https://golang.org/cmd/go/](https://github.com/go-delve/delve)
