@@ -1,4 +1,4 @@
-# dlv leanring
+# dlv 快速开始
 
 dlv 全称 [delve](https://github.com/go-delve/delve) ，它是一款面向 golang 语言的调试工具（图片来自 dlv 官网）。
 ![](https://raw.githubusercontent.com/go-delve/delve/master/assets/delve_horizontal.png)
@@ -185,7 +185,7 @@ go build -v -o demo.exe demo.go
 ps -ef|grep -v grep |grep demo.exe
 ```
 
-或者使用 gops 查看进程 PID<sup>4</sup>，第一列为 PID
+或者使用 gops<sup>4</sup> 查看进程 PID，第一列为 PID
 ```
 gops |grep demo.exe
 ```
@@ -277,7 +277,7 @@ go get -t github.com/google/gops/
 - 以 headless 模式 attach 指定 PID
 - connect 到 debug 会话
 
-这里留一个疑问：为什么 Attach to Process 在没有指定 `--continue` 下，目标进程没有暂停，除非命中断点？
+这里留一个疑问：为什么 Attach to Process 在没有指定 `--continue` 下，目标进程没有暂停，除非命中断点，而 dlv attach 则需要明确指定？
 
 # REF
 

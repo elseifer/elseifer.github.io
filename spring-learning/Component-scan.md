@@ -1,6 +1,9 @@
 
 # SpringBoot 组件扫描
-为了实现依赖项注入，Spring 创建了一个应用上下文（ApplicationContext）。Spring 实例化对象并将其添加到应用上下文中，应用上下文中的对象称为 Spring bean 或组件。Spring 解析 Spring bean 之间的依赖关系，并将Spring bean注入到其他Spring bean的字段或构造函数中。在类路径中搜索配置类的过程称为组件扫描<sup>[1]</sup>。
+为了实现依赖项注入，Spring 创建了 application context（应用上下文）。
+启动过程中，Spring 实例化对象并将其添加到应用上下文中，应用上下文中的对象称为 Spring beans 或 components。
+Spring 解析 beans 之间的依赖关系，并将 beans 注入到其他 beans 的字段或构造函数中。
+在类路径中搜索配置类的过程称为组件扫描<sup>[1]</sup>。
 
 SpringBoot2 基于 Spring5。
 
@@ -85,3 +88,4 @@ public @interface EnableAutoConfiguration {
  `spring.factories` 文件是一个典型的 properties 配置文件，格式仍然是 `Key=Value` 的形式，不过 Key 和 Value 均是 Java 的全限定类名，比如：`org.springframework.data.repository.core.support.RepositoryFactorySupport=org.springframework.data.jpa.repository.support.JpaRepositoryFactory`。
 
 # REF
+1.[spring-component-scanning](https://reflectoring.io/spring-component-scanning/)

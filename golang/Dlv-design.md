@@ -1,5 +1,5 @@
 # Delve 设计
-依然以 Mac 环境为例。
+依然以 Mac 环境演示，go version go1.16.3 darwin/amd64
 
 ## 1.结构
 开始之前，我们先了解下 delve 设计结构<sup>1</sup>
@@ -14,7 +14,7 @@
 
 ![](./images/architecture-of-dlv.jpg)
 
-**疑问**：在没有 Goland、Gdlv 等等可视化用户界面时，Dlv Program Promt 充当了 UI Layer ？
+**疑问**：在没有 Goland、Gdlv 等等可视化用户界面时，Cmd Promt 充当了 UI Layer ？
 我理解是这样。
 
 ## 2.实践观察
@@ -23,14 +23,18 @@
 ### 实践1：headless模式
 
 1. 以  headless 模式 attach 目标进程
+
+终端1中运行 `./demo.exe`，进程 PID 43649（获取[进程 PID](./Dlv-learning.md#attach正在运行的程序)），再新启终端2运行如下命令：
 ```
 dlv --headless --listen=:8181 attach 43649
 ```
 
-使用 `gops` 查看 dlv 进程，记住 dlv attach 进程 PID **46703**，目标进程 demo.exe 的进程 PID **43694**，PPID **44706**
+使用 `gops` 查看进程，记住 dlv attach 进程 PID **46703**，目标进程 demo.exe 的进程 PID **43694**，PPID **44706**
 ![](./images/gops-dlv-attach.jpg)
 
 2. 连接上 8181 debug 会话
+
+新启终端3运行如下命令：
 ```
 dlv connect 127.0.0.1:8181
 ```
@@ -74,19 +78,16 @@ netstat -v -p tcp |grep [pid]
 ### 实践2：非headless模式
 
 1. 以  headless 模式 attach 目标进程
-```
-./demo.exe
 
-dlv attach 49264
-```
+终端1中运行 `./demo.exe`，进程 PID 49264，再新启终端2运行 `dlv attach 49264`
 
 2. 查看 dlv 进程的网络连接
 
-dvl 进程和网络连接：
+dlv 进程（只有一个）和网络连接：
 
 ![](./images/debugserv.jpg)
 
-我们再次观察到 debugserver 的 PID 48330 与 demo.exe 进程的 PPID 49330 相同。
+我们再次观察到 debugserver 的 PID **48330** 与 demo.exe 进程的 PPID 49330 相同。
 
 3. 梳理下链接
 
@@ -105,9 +106,9 @@ dvl 进程和网络连接：
 为何 demo.exe 进程的父进程会是 debugserv？
 
 - PID 是程序被操作系统加载到内存成为进程后动态分配的资源，它是唯一的；
-- PPID（parent process ID）：PPID是父进程号；
+- PPID 是 PPID是父进程号 parent process ID；
 - 一个进程创建的另一个新进程称为子进程，创建子进程的进程称为父进程；
-- 对于一个普通的用户进程，其父进程是执行它的Shell，例如 bash、zsh 等；
+- 对于一个普通的用户进程，其父进程是执行它的 shell，例如 bash、zsh 等，多个 shell 会话窗口是不同的 shell 进程；
 - 所有进程追溯其祖先最终会到进程号为1的进程上，这个进程为 init 进程；
 - init 进程是 Linux 内核启动后第一个执行的进程；
 
@@ -139,6 +140,6 @@ attach 前后 demo.exe 的 PPID 发生了变化，从 zsh 进程变为 debugserv
 
 1.[Architecture of Delve slides](https://speakerdeck.com/aarzilli/internal-architecture-of-delve)
 
-2.https://lldb.llvm.org/man/lldb-server.html
+2.[https://lldb.llvm.org/man/lldb-server.html](https://lldb.llvm.org/man/lldb-server.html)
 
 3.[llgs: add --reverse-connect support](https://github.com/llvm/llvm-project/commit/31bde322f374582d7106f0c847b0ff3b6b6d705b)

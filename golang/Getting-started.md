@@ -19,7 +19,7 @@ export GOPATH=$HOME/go
 export GOBIN=$GOPATH/bin
 ```
 
-目前，高版本 Go 已经不需要设置 GOROOT 环境变量<sup>[4]</sup><sup>5</sup>。
+目前 Go 已经不需要设置 GOROOT 环境变量<sup>[4]</sup><sup>5</sup>。
 
 # 课外
 
@@ -65,12 +65,12 @@ sudo automount -vc
 
 ## REF
 
-1.https://golang.org/doc/tutorial/getting-started
+1.[https://golang.org/doc/tutorial/getting-started](https://golang.org/doc/tutorial/getting-started)
 
-2.https://apple.stackexchange.com/questions/208478/how-do-i-disable-system-integrity-protection-sip-aka-rootless-on-macos-os-x
+2.[https://apple.stackexchange.com/questions/208478/how-do-i-disable-system-integrity-protection-sip-aka-rootless-on-macos-os-x](https://apple.stackexchange.com/questions/208478/how-do-i-disable-system-integrity-protection-sip-aka-rootless-on-macos-os-x)
 
-3.https://stackoverflow.com/questions/1362703/how-can-i-use-the-home-directory-on-mac-os-x
+3.[https://stackoverflow.com/questions/1362703/how-can-i-use-the-home-directory-on-mac-os-x](https://stackoverflow.com/questions/1362703/how-can-i-use-the-home-directory-on-mac-os-x)
 
-4.https://dave.cheney.net/2013/06/14/you-dont-need-to-set-goroot-really
+4.[https://dave.cheney.net/2013/06/14/you-dont-need-to-set-goroot-really](https://dave.cheney.net/2013/06/14/you-dont-need-to-set-goroot-really)
 
-5.https://go-review.googlesource.com/c/go/+/42533/
+5.[https://go-review.googlesource.com/c/go/+/42533/](https://go-review.googlesource.com/c/go/+/42533/)
