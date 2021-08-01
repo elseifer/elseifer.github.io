@@ -2,7 +2,7 @@
 依然以 Mac 环境演示，go version go1.16.3 darwin/amd64
 
 ## 1.结构
-开始之前，我们先了解下 delve 设计结构<sup>1</sup>
+开始之前，我们先了解下 delve 设计结构：
 
 | /    |  layer | desc |
 | :--: |  :--:  | :--: |
@@ -10,7 +10,7 @@
 | 2    |  Symbolic Layer | knows about line numbers, types, variable names, etc. |
 | 3    |  Target Layer | controls target process,doesn’t know anything about your source code. |
 
-不过这是一个简化模型，在[Dlv 初步学习](./Dlv-learning.md#如何通信)中，我们了解到存在着一个 dvl 到 debugserver 的相互通信链路，在「Architecture of Delve slides」中 Delve 设计者们确实是这么设计的：
+不过这是一个简化模型，在[Dlv 初步学习](./Dlv-learning.md#如何通信)中，我们了解到存在着一个 dvl 到 debugserver 的相互通信链路，在 Architecture of Delve slides<sup>[1]</sup> 中 Delve 设计者们确实是这么设计的：
 
 ![](./images/architecture-of-dlv.jpg)
 
@@ -98,7 +98,7 @@ dlv 进程（只有一个）和网络连接：
 
 ## 3.进程debugserv为何物
 
-`ps -ef|grep debugserv` 得到进程信息，结合 delve 设计结构<sup>1</sup>一文，我们还可以猜测它和 lldb 有关。
+`ps -ef|grep debugserv` 得到进程信息，结合 Architecture of Delve slides<sup>[1]</sup> 一文，我们还可以猜测它和 lldb 有关。
 ```
 /Library/Developer/CommandLineTools/Library/PrivateFrameworks/LLDB.framework/Versions/A/Resources/debugserver -R 127.0.0.1:59828 --attach=50879
 ```

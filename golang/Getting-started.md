@@ -5,7 +5,7 @@ Golang 入门，以 Mac 环境演示。
 
 下载 Mac 下的 go 安装包，例如 go1.16.6.darwin-amd64.pkg，双击该 pkg 包将默认将 go 安装在 `/usr/local/go/` 下，并把 `/usr/local/go/bin` 添加在环境变量 PATH 中，详见 `/etc/paths.d/go` 文件。
 
-安装结束后在终端中键入 `go version` 可以查看到类似如下信息<sup>1</sup>：
+安装结束后在终端中键入 `go version` 可以查看到类似如下信息<sup>[1]</sup>：
 ```shell
 > go version    
 go version go1.16.3 darwin/amd64
@@ -19,7 +19,7 @@ export GOPATH=$HOME/go
 export GOBIN=$GOPATH/bin
 ```
 
-目前 Go 已经不需要设置 GOROOT 环境变量<sup>[4]</sup><sup>5</sup>。
+目前 Go 已经不需要设置 GOROOT 环境变量<sup>[4]</sup><sup>[5]</sup>。
 
 # 课外
 
@@ -34,7 +34,7 @@ qingqin.cdd
 
 2. 把 /homea/dmin 的权限交给当前用户
 
-MacOS 遇到 rootless 问题需要关闭 SIP 保护<sup>2</sup>
+MacOS 遇到 rootless 问题需要关闭 SIP 保护<sup>[2]</sup>
 
 ```shell
 cd /home

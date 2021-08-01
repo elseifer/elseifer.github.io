@@ -2,7 +2,7 @@
 
 继续对 [Dlv 设计结构](./Dlv-design.md) 进行探索，这次主要以代码分析为主，delve 代码阅读以 commitId aaed14ff 为止，以 Mac 环境为主要讨论场景。
 
-本文引用的英文说明和 delve 代码较多，如果没有特别注释则默认来自 [https://github.com/go-delve/delve](https://github.com/go-delve/delve) 和 Architecture of Delve slides<sup>1</sup>。
+本文引用的英文说明和 delve 代码较多，如果没有特别注释则默认来自 [https://github.com/go-delve/delve](https://github.com/go-delve/delve) 和 Architecture of Delve slides<sup>[1]</sup>。
 
 ## Target Layer
 
