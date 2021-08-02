@@ -4,7 +4,7 @@
 ## Configuration 注解的作用
 
 从 Spring3.0 开始，`@Configuration` 可用于定义配置类，可替换 xml 配置文件，配置类中声明了一个或多个被 @Bean 注解的方法，Spring 容器会处理这些方法以构建 bean 定义和处理 bean 的请求。  
-配置类会被 AnnotationConfigApplicationContext 或 AnnotationConfigWebApplicationContext （web 环境）处理<sup>1</sup>，SpringBoot Web 环境下由 AnnotationConfigServletWebServerApplicationContext 处理配置类。
+配置类会被 AnnotationConfigApplicationContext 或 AnnotationConfigWebApplicationContext （web 环境）处理<sup>[1]</sup>，SpringBoot Web 环境下由 AnnotationConfigServletWebServerApplicationContext 处理配置类。
 
 ### 什么是 Spring 配置类
 

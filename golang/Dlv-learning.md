@@ -9,7 +9,7 @@ dlv 全称 [delve](https://github.com/go-delve/delve) ，它是一款面向 gola
 
 ## 1.Install
 
-1. 下载 dlv 代码并构建<sup>1</sup>
+1. 下载 dlv 代码并构建<sup>[1]</sup>
 ```shell
 git clone https://github.com/go-delve/delve
 cd delve
@@ -74,7 +74,7 @@ ln -s $GOBIN/dlv /usr/local/bin/dlv
 
 ### Options
 
-下面 Options 是全局级别的，通过 `dlv -h` 获取帮助，同时具体的 dlv command 也会有自己独有的 Options ，通过 `dlv [command] -h` 获取<sup>2</sup>。
+下面 Options 是全局级别的，通过 `dlv -h` 获取帮助，同时具体的 dlv command 也会有自己独有的 Options ，通过 `dlv [command] -h` 获取<sup>[2]</sup>。
 
 ```
 --accept-multiclient               Allows a headless server to accept multiple client connections.
@@ -185,7 +185,7 @@ go build -v -o demo.exe demo.go
 ps -ef|grep -v grep |grep demo.exe
 ```
 
-或者使用 gops<sup>4</sup> 查看进程 PID，第一列为 PID
+或者使用 gops<sup>[4]</sup> 查看进程 PID，第一列为 PID
 ```
 gops |grep demo.exe
 ```
@@ -253,8 +253,8 @@ clearall
 ## 4.More
 
 ### Goland集成Attach
-对于 remote attatch，我们可以在 Goland 中集成 gops <sup>3</sup> 工具。
-gops 由 Google 官方提供，用于查看和诊断正在运行的 go 程序进程<sup>4</sup>。
+对于 remote attatch，我们可以在 Goland 中集成 gops <sup>[3]</sup> 工具。
+gops 由 Google 官方提供，用于查看和诊断正在运行的 go 程序进程<sup>[4]</sup>。
 
 >gops is a command to list and diagnose Go processes currently running on your system.
 
