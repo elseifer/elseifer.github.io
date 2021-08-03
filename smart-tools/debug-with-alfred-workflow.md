@@ -60,9 +60,9 @@ echo -n $result | pbcopy
 唤出 Alfred 搜索输入 `adg` ，键入一次空格，在搜索框中粘贴进程信息，敲下回车，此时，你的粘贴板中最新一次记录已经是添加 debug 的进程信息啦！
 
 ## 课外：不同 Java 版本的 Debug 参数
-对于 Java5 以上版本，debug 参数：
+对于 Java5 及以上版本，debug 参数：
 `-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000`  
-而 Java5 及更低版本，dubug 参数<sup>[1]</sup>：
+而 Java5 以下版本，dubug 参数<sup>[1]</sup>：
 `-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8000`
 
 # Ref
