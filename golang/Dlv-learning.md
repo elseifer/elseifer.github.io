@@ -134,7 +134,7 @@ ln -s $GOBIN/dlv /usr/local/bin/dlv
 dlv attach 16591 --continue --headless --accept-multiclient --listen=:8181
 ```
 
-**注意**：指定 `--continue` 时必须搭配 `--headless`，未指定 `--listen` 时端口由系统分配
+**注意**：指定 `--continue` 时必须搭配 `--headless` `--accept-multiclient`，未指定 `--listen` 时端口由系统分配
 
 连接上已开启的 8181 会话
 ```shell
@@ -250,10 +250,29 @@ clearall
 ```
 但它不会清除 dlv 默认施加的 panic 断点。
 
-## 4.More
+## 4.Goland集成Attach
 
-### Goland集成Attach
-对于 remote attatch，我们可以在 Goland 中集成 gops <sup>[3]</sup> 工具。
+调试程序一般有以下方式：
+
+- debugger 启动程序，一般常见在 IDE（如 Goland）来调试运行我们编写的代码，或 `dlv exec`、`dlv debug` 启动程序；
+- 已在运行的程序，debugger attach 到目标进程，一般常见线上问题的诊断排查；
+
+程序运行的位置也有两种情况：  
+- 运行在本地的程序
+- 运行在远端的程序（更为常见）
+
+### 4.1 debuger 启动程序
+
+`dlv exec` 运行程序并打开 debug 会话（这里我们设置了 `--continue` 让程序继续运行而不是阻塞等待 client 连接）：
+```
+dlv --listen=:2345 --headless=true --api-version=2 exec ./demo.exe --continue --accept-multiclient
+```
+
+打开 Goland 的 **Edit | Run Configurations** 点击 **+** 新增 **Go Remote** 把 host、port 填写上远端地址和端口。
+
+### 4.2 调试本地正在运行的程序
+
+对于调试本地正在运行的 go 程序，我们可以在 Goland 中集成 gops <sup>[3]</sup> 工具。
 gops 由 Google 官方提供，用于查看和诊断正在运行的 go 程序进程<sup>[4]</sup>。
 
 >gops is a command to list and diagnose Go processes currently running on your system.
@@ -278,6 +297,16 @@ go get -t github.com/google/gops/
 - connect 到 debug 会话
 
 这里留一个疑问：为什么 Attach to Process 在没有指定 `--continue` 下，目标进程没有暂停，除非命中断点，而 dlv attach 则需要明确指定？
+
+### 4.3 调试远端正在运行的程序
+
+其实就是 `dlv attach` 的 headless 模式（这里我们设置了 `--continue` 让程序继续运行而不是阻塞等待 client 连接）
+
+```
+dlv --listen=:2345 --headless=true --api-version=2 attach 71181 --continue --accept-multiclient
+```
+
+打开 Goland 的 **Edit | Run Configurations** 点击 **+** 新增 **Go Remote** 把 host、port 填写上远端地址和端口。
 
 # REF
 
