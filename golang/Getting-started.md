@@ -3,9 +3,9 @@ Golang 入门，以 Mac 环境演示。
 
 ## Install
 
-下载 Mac 下的 go 安装包，例如 go1.16.6.darwin-amd64.pkg，双击该 pkg 包将默认将 go 安装在 `/usr/local/go/` 下，并把 `/usr/local/go/bin` 添加在环境变量 PATH 中，详见 `/etc/paths.d/go` 文件。
+在 [https://golang.org/dl/](https://golang.org/dl/) 找到合适的 go for Mac 安装包并下载，例如 go1.16.6.darwin-amd64.pkg。
 
-安装结束后在终端中键入 `go version` 可以查看到类似如下信息<sup>[1]</sup>：
+双击该 pkg 包将默认将 go 安装在 `/usr/local/go/` 下，并把 `/usr/local/go/bin` 添加在环境变量 PATH 中（见 `/etc/paths.d/go` 文件），安装结束后在终端中键入 `go version` 来验证安装效果<sup>[1]</sup>：
 ```shell
 > go version    
 go version go1.16.3 darwin/amd64
@@ -19,11 +19,52 @@ export GOPATH=$HOME/go
 export GOBIN=$GOPATH/bin
 ```
 
-目前 Go 已经不需要设置 GOROOT 环境变量<sup>[4]</sup><sup>[5]</sup>。
+目前 Go 已经不需要设置 GOROOT 环境变量<sup>[4]</sup><sup>[5]</sup>，`go` 命令所在目录的父目录默认视为 GOROOT，例如 `/usr/local/go`。
+
+同时 GOPATH 不能和 GOROOT 相同，否则遇到这样的报错：*$GOPATH must not be set to $GOROOT. For more details see: 'go help gopath'*
+
+可以使用 `go env` 来查看 go 环境变量，例如 `go env GOROOT`
 
 # 课外
 
-## 添加admin目录
+## linux环境安装go
+
+go 官网介绍了如何把 go 安装 `/usr/local/go` 目录<sup>[1]</sup>（该目录一般是 root 权限），但有时候需要在其他目录安装，例如 `/home/admin`（或者我们当前用户目录），这里介绍如何安装。
+
+前提；
+- 需要 admin 角色登录（以下示例演示在 /home/admin 目录）
+- 依据 linux 机器 cpu 架构选择合适的安装包
+
+### 安装
+
+我们把 go 安装在隐藏目录 .go 下：
+```
+cd /home/admin
+mkdir .go
+```
+
+解压 go 安装包默认在 `.go/go` 目录下
+```
+cd .go
+wget https://dl.google.com/go/go1.14.13.linux-amd64.tar.gz
+tar -zxvf go1.14.13.linux-amd64.tar.gz 
+```
+
+### 环境变量
+
+`mkdir go` 创建用户的 go 代码目录，编辑 `/home/admin/.bash_profile`：
+
+```
+export GOPATH=/home/admin/go
+export GOBIN=$GOPATH/bin
+export PATH=$PATH:/home/admin/.go/go/bin
+```
+
+```
+source .bash_profile
+```
+
+## Mac添加admin目录
 
 1. 获取当期用户
 
