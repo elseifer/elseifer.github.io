@@ -19,7 +19,7 @@ export GOPATH=$HOME/go
 export GOBIN=$GOPATH/bin
 ```
 
-目前 Go 已经不需要设置 GOROOT 环境变量<sup>[4]</sup><sup>[5]</sup>，`go` 命令所在目录的父目录默认视为 GOROOT，例如 `/usr/local/go`。
+目前 Go 已经不需要设置 GOROOT 环境变量<sup>[4]</sup><sup>[5]</sup>，`go` 命令所在目录的父目录默认视为 GOROOT，如 `/usr/local/go` 目录
 
 同时 GOPATH 不能和 GOROOT 相同，否则遇到这样的报错：*$GOPATH must not be set to $GOROOT. For more details see: 'go help gopath'*
 
