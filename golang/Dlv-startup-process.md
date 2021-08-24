@@ -27,7 +27,7 @@ Goland 打开 delve 代码，debug 运行 `cmd/dlv/main.go` 的 main 方法，�
 ## 分步拆解
 
 ### 一
-`cmd/dlv/main.go`  dlv 程序入口，方法无参数无返回值。
+`cmd/dlv/main.go`  dlv 程序入口，`main` 方法无参数无返回值。
 
 我们向程序传递的入参通过 `os.Args` 获取，`os.Args` 与 Java 中 `public static main(String[] args)` 的 args 类似，它是一个数组，第一个元素为进程名，第二个元素为第一个入参，依次后推。
 

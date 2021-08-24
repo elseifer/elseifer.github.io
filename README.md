@@ -15,6 +15,6 @@
   - [IoC 基本概念](spring-learning/What-is-IoC.md)
   - [Profile 机制](spring-learning/Profile.md)
   - [Spring 配置类](spring-learning/Configuration.md)
-  - [SpringBoot 组件扫描](spring-learning/Component-scan.md)
+  - [Spring 组件扫描](spring-learning/Component-scan.md)
 - Java&Jdk
   - [代码中的 Java 兼容性问题](jdk-compatibility/Java-Compatibility.md)

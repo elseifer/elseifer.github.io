@@ -19,7 +19,7 @@ export GOPATH=$HOME/go
 export GOBIN=$GOPATH/bin
 ```
 
-目前 Go 已经不需要设置 GOROOT 环境变量<sup>[4]</sup><sup>[5]</sup>，`go` 命令所在目录的父目录默认视为 GOROOT，例如 `/usr/local/go`。
+目前 Go 已经不需要设置 GOROOT 环境变量<sup>[4]</sup><sup>[5]</sup>，`go` 命令所在目录的父目录默认视为 GOROOT，如 `/usr/local/go` 目录
 
 同时 GOPATH 不能和 GOROOT 相同，否则遇到这样的报错：*$GOPATH must not be set to $GOROOT. For more details see: 'go help gopath'*
 
@@ -43,7 +43,7 @@ cd /home/admin
 mkdir .go
 ```
 
-解压 go 安装包默认在 `.go/go` 目录下
+在 .go 目录中下载并解压 go 安装包，文件默认解压到 `.go/go` 目录：
 ```
 cd .go
 wget https://dl.google.com/go/go1.14.13.linux-amd64.tar.gz
@@ -52,7 +52,7 @@ tar -zxvf go1.14.13.linux-amd64.tar.gz
 
 ### 环境变量
 
-`mkdir go` 创建用户的 go 代码目录，编辑 `/home/admin/.bash_profile`：
+`/home/admoin` 下创建用户的 go 目录，编辑 `/home/admin/.bash_profile`：
 
 ```
 export GOPATH=/home/admin/go
