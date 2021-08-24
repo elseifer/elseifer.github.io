@@ -30,7 +30,7 @@ environment variable is not set.
 如果安装报错 `"https://proxy.golang.org/github.com/cosiner/argv/@v/v0.1.0.mod": dial tcp 172.217.160.113:443: i/o timeout` 设置下 GOPROXY 即可：
 
 ```shell
-go env -w GOPROXY=https://goproxy.cn
+go env -w GOPROXY=https://goproxy.cn,direct
 ```
 
 2. 检测下 dvl 安装
