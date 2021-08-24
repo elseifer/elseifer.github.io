@@ -31,7 +31,7 @@ export GOBIN=$GOPATH/bin
 
 go 官网介绍了如何把 go 安装 `/usr/local/go` 目录<sup>[1]</sup>（该目录一般是 root 权限），但有时候需要在其他目录安装，例如 `/home/admin`（或者我们当前用户目录），这里介绍如何安装。
 
-前提；
+前提：
 - 需要 admin 角色登录（以下示例演示在 /home/admin 目录）
 - 依据 linux 机器 cpu 架构选择合适的安装包
 
@@ -52,7 +52,7 @@ tar -zxvf go1.14.13.linux-amd64.tar.gz
 
 ### 环境变量
 
-`/home/admoin` 下创建用户的 go 目录，编辑 `/home/admin/.bash_profile`：
+`/home/admoin` 下创建用户的 go 目录，编辑 `/home/admin/.bash_profile` 添加如下内容：
 
 ```
 export GOPATH=/home/admin/go
@@ -60,9 +60,7 @@ export GOBIN=$GOPATH/bin
 export PATH=$PATH:/home/admin/.go/go/bin
 ```
 
-```
-source .bash_profile
-```
+执行 `source .bash_profile` 立即生效刚刚配置的环境变量。
 
 ## Mac添加admin目录
 
