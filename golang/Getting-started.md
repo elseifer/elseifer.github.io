@@ -64,6 +64,8 @@ export PATH=$PATH:/home/admin/.go/go/bin
 
 ## Mac添加admin目录
 
+**MacOS 10.15.5 及更高版本，SIP 机制升级了，这种方式不适用，暂无解决方案**
+
 1. 获取当期用户
 
 ```shell
@@ -71,7 +73,16 @@ export PATH=$PATH:/home/admin/.go/go/bin
 qingqin.cdd
 ```
 
-2. 把 /homea/dmin 的权限交给当前用户
+2. 允许显示 /home
+
+```shell
+sudo vim /etc/auto_master 
+sudo automount -vc 
+```
+
+执行第一条命令，注释 `/homeauto_home -nobrowse,hidefromfinder` 这一行，执行第二条命令或者重启 Mac 电脑使修改生效<sup>[3]</sup>。
+
+3. 把 /homea/dmin 的权限交给当前用户
 
 MacOS 遇到 rootless 问题需要关闭 SIP 保护<sup>[2]</sup>
 
@@ -79,14 +90,6 @@ MacOS 遇到 rootless 问题需要关闭 SIP 保护<sup>[2]</sup>
 cd /home
 mkdir admin
 sudo chown -R qingqin.cdd:staff admin
-```
-
-3. 允许显示 /home/admin
-
-执行第一条命令，注释 `/homeauto_home -nobrowse,hidefromfinder` 这一行，执行第二条命令或者重启 Mac 电脑使修改生效<sup>[3]</sup>。
-```shell
-sudo vim /etc/auto_master 
-sudo automount -vc 
 ```
 
 ## Mac环境变量
