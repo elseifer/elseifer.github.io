@@ -3,9 +3,9 @@ Golang 入门，以 Mac 环境演示。
 
 ## Install
 
-在 [https://golang.org/dl/](https://golang.org/dl/) 找到合适的 go for Mac 安装包并下载，例如 go1.16.6.darwin-amd64.pkg。
+在 [https://golang.org/dl/](https://golang.org/dl/) 找到合适的安装包，例如 go1.16.6.darwin-amd64.pkg 并下载。
 
-双击该 pkg 包将默认将 go 安装在 `/usr/local/go/` 下，并把 `/usr/local/go/bin` 添加在环境变量 PATH 中（见 `/etc/paths.d/go` 文件），安装结束后在终端中键入 `go version` 来验证安装效果<sup>[1]</sup>：
+双击 pkg 包进行安装，默认将 go 安装在 `/usr/local/go/` 下，并把 `/usr/local/go/bin` 添加在环境变量 PATH 中（见 `/etc/paths.d/go` 文件），安装结束后在终端中键入 `go version` 来验证安装效果<sup>[1]</sup>：
 ```shell
 > go version    
 go version go1.16.3 darwin/amd64
@@ -29,9 +29,9 @@ export GOBIN=$GOPATH/bin
 
 ## linux环境安装go
 
-go 官网介绍了如何把 go 安装 `/usr/local/go` 目录<sup>[1]</sup>（该目录一般是 root 权限），但有时候需要在其他目录安装，例如 `/home/admin`（或者我们当前用户目录），这里介绍如何安装。
+go 官网介绍了如何把 go 安装 `/usr/local/go` 目录<sup>[1]</sup>（该目录一般是 root 权限），但有时候需要在其他目录安装，例如 `/home/admin`（或者当前用户目录），这里介绍如何安装。
 
-前提；
+前提：
 - 需要 admin 角色登录（以下示例演示在 /home/admin 目录）
 - 依据 linux 机器 cpu 架构选择合适的安装包
 
@@ -52,7 +52,7 @@ tar -zxvf go1.14.13.linux-amd64.tar.gz
 
 ### 环境变量
 
-`/home/admoin` 下创建用户的 go 目录，编辑 `/home/admin/.bash_profile`：
+`/home/admoin` 下创建用户的 go 目录，编辑 `/home/admin/.bash_profile` 添加如下内容：
 
 ```
 export GOPATH=/home/admin/go
@@ -60,11 +60,11 @@ export GOBIN=$GOPATH/bin
 export PATH=$PATH:/home/admin/.go/go/bin
 ```
 
-```
-source .bash_profile
-```
+执行 `source .bash_profile` 立即生效刚刚配置的环境变量。
 
 ## Mac添加admin目录
+
+**MacOS 10.15.5 及更高版本，SIP 机制升级了，这种方式不适用，暂无解决方案**
 
 1. 获取当期用户
 
@@ -73,7 +73,16 @@ source .bash_profile
 qingqin.cdd
 ```
 
-2. 把 /homea/dmin 的权限交给当前用户
+2. 允许显示 /home
+
+```shell
+sudo vim /etc/auto_master 
+sudo automount -vc 
+```
+
+执行第一条命令，注释 `/homeauto_home -nobrowse,hidefromfinder` 这一行，执行第二条命令或者重启 Mac 电脑使修改生效<sup>[3]</sup>。
+
+3. 把 /homea/dmin 的权限交给当前用户
 
 MacOS 遇到 rootless 问题需要关闭 SIP 保护<sup>[2]</sup>
 
@@ -81,14 +90,6 @@ MacOS 遇到 rootless 问题需要关闭 SIP 保护<sup>[2]</sup>
 cd /home
 mkdir admin
 sudo chown -R qingqin.cdd:staff admin
-```
-
-3. 允许显示 /home/admin
-
-执行第一条命令，注释 `/homeauto_home -nobrowse,hidefromfinder` 这一行，执行第二条命令或者重启 Mac 电脑使修改生效<sup>[3]</sup>。
-```shell
-sudo vim /etc/auto_master 
-sudo automount -vc 
 ```
 
 ## Mac环境变量

@@ -31,8 +31,8 @@ ApplicationContext applicationContext = new AnnotationConfigApplicationContext(B
 >@Configuration is meta-annotated with @Component, therefore @Configuration classes are candidates for component scanning (typically using Spring XML's <context:component-scan/> element) and therefore may also take advantage of @Autowired/@Inject like any regular @Component.
 
 
-### Configuration 处理器
-ConfigurationClassPostProcessor 负责解析和处理（更具体的讲是 postProcessBeanDefinitionRegistry 方法）被 `@Configuration` 注解的类。
+### 配置类处理器
+ConfigurationClassPostProcessor 负责解析和处理被 `@Configuration` 注解的类（更具体的讲是 postProcessBeanDefinitionRegistry 方法）。
 
 > BeanFactoryPostProcessor used for bootstrapping processing of `@Configuration` classes.  
 Registered by default when using `<context:annotation-config/>` or `<context:component-scan/>`. Otherwise, may be declared manually as with any other BeanFactoryPostProcessor.  
@@ -40,48 +40,21 @@ This post processor is priority-ordered as it is important that any Bean methods
 
 这里先埋下一个知识点： ConfigurationClassPostProcessor 需要配置 `<context:annotation-config/>` 、`<context:component-scan/>`，或者手动声明 `<bean class='org.springframework.context.annotation.ConfigurationClassPostProcessor'/>`。
 
-#### 处理的顺序
-ConfigurationClassPostProcessor 首先会判断在 ApplicationContext 中的 bean 是否被 @Configuration 注解标记，然后使用 ConfigurationClassParser 来解析 @Configuration。ConfigurationClassPostProcessor 解析 @Configuration 的大致流程：
-  1. 使用 ConfigurationClassUtils.checkConfigurationClassCandidate 检查 BeanDefinition 是否 @Configuration 注解标记
-  2. 对 @Configuration 进行排序
-  3. 使用 ConfigurationClassParser 解析 @Configuration 注解的信息
+#### 解析配置类的过程
+ConfigurationClassPostProcessor 首先会判断在 ApplicationContext 中的 bean 是否被 `@Configuration` 注解标记，然后使用 ConfigurationClassParser 来解析 `@Configuration`。
+
+ConfigurationClassPostProcessor 解析配置类的大致流程：
+  1. 使用 `ConfigurationClassUtils.checkConfigurationClassCandidate` 检查 BeanDefinition 是否有 `@Configuration` 注解标记
+  2. 对配置类进行排序
+  3. 使用 ConfigurationClassParser 解析 `@Configuration` 注解的信息
   4. 使用 ConfigurationClassBeanDefinitionReader 解析 BeanDefinition
 
-</br>其中 ConfigurationClassUtils.checkConfigurationClassCandidate 的判断逻辑与下列代码类似，AnnotatedElementUtils.isAnnotated 递归遍历所有注解：
+其中 `ConfigurationClassUtils.checkConfigurationClassCandidate` 的判断逻辑与下列代码类似，`AnnotatedElementUtils.isAnnotated` 递归遍历所有注解：
 ```java
-//TestApplication 是启动类
-AnnotatedElementUtils.isAnnotated(TestApplication.class, Configuration.class.getName());
+//MyApplication 是启动类
+AnnotatedElementUtils.isAnnotated(MyApplication.class, Configuration.class.getName());
 ```
-
-前文提到了，被 @Configuration 注解的类是被视为配置类的，那为什么 SpringBootApplication 启动类会被当做配置类呢？
-
-#### SpringBootConfiguration 注解
-
-得益于 SpringBootConfiguration 注解，正如它的定义：
-```java
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-@Configuration
-public @interface SpringBootConfiguration {}
-```
-
-在 SpringBoot 设计中 SpringBootConfiguration 来代替 Configuration，在使用 SpringBootApplication 时会自动带入 SpringBootConfiguration。
-
-`@SpringBootApplication` 由如下几个注解构成：
-```mermaid
-graph TD
-  A(SpringBootApplication)-->B1(SpringBootConfiguration)
-  A-->B2(EnableAutoConfiguration)
-  A-->B3(ComponentScan)
-  A-->B4(Inherited)
-  B1-->C1(Configuration)
-  C1-->C2(Component)
-```
-
-即一个 SpringBootApplication 注解具备 Configuration、ComponentScan、EnableAutoConfiguration 三者的功能：注册Bean、组件自动扫描、自动配置。
-
-#### 何时处理配置类 
+#### Spring何时处理配置类 
 
 ConfigurationClassPostProcessor 又由谁来调用呢？  
 
@@ -116,6 +89,40 @@ protected ConfigurableApplicationContext createApplicationContext() {
 }
 ```
 
+### SpringBootApplication 注解
+
+在SpringBoot 中额外提供了一些配置类相关的注解，例如 SpringBoot 应用的入口启动类一般是如下形式：
+
+```java 
+@SpringBootApplication
+public class MyApplication {
+  SpringApplication.run(MyApplication.class, args);
+}
+```
+
+在 SpringBoot 设计中 `SpringBootConfiguration` 来代替 `Configuration`，在使用 `SpringBootApplication` 时会自动带入 `SpringBootConfiguration` 注解
+
+```java
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Configuration
+public @interface SpringBootConfiguration {}
+```
+
+`@SpringBootApplication` 由如下几个注解构成：
+```mermaid
+graph TD
+  A(SpringBootApplication)-->B1(SpringBootConfiguration)
+  A-->B2(EnableAutoConfiguration)
+  A-->B3(ComponentScan)
+  A-->B4(Inherited)
+  B1-->C1(Configuration)
+  C1-->C2(Component)
+```
+
+即一个 SpringBootApplication 注解具备 Configuration、ComponentScan、EnableAutoConfiguration 三者的功能：注册Bean、组件自动扫描、自动配置。
+
 ## ComponentScan 注解
 
 这里填下前文的一个知识点：ConfigurationClassPostProcessor 是需要配置的，例如在 xml 中添加 `<context:component-scan/>` 元素，是不是仅能通过 xml 配置呢? 答案自然是否定的。
@@ -137,9 +144,12 @@ Spring Boot 提供了 `@EnableAutoConfiguration` 用于激活自动配置（auto
 ```java
 @SpringBootApplication(scanBasePackages={}, 
   exclude = {DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class, HibernateJpaAutoConfiguration.class},)
-public class SpringBootTestApplication {}
+public class MyApplication {}
 ```
-scanBasePackages 属性对应 ComponentScan 的 basePackages 属性，exclude 属性对应 EnableAutoConfiguration 的 exclude 属性，这就是简单的实现了 ComponentScan、EnableAutoConfiguration 的组件扫描和自动配置的能力。
+- scanBasePackages 属性对应 ComponentScan 的 basePackages 属性；
+- exclude 属性对应 EnableAutoConfiguration 的 exclude 属性；
+
+简单的实现了 ComponentScan、EnableAutoConfiguration 的组件扫描和自动配置的能力。
 
 ## 扫描配置类的其他方式
 
@@ -167,15 +177,31 @@ org.springframework.context.ApplicationContextInitializer=\
 ```java
 @Import({MyConfig.class})
 @SpringBootApplication
-public class SpringBootTestApplication {...}
+public class MyApplication {...}
 ```
 
-额外提及下 `@ImportResource`，同 `@Import` 的使用方式，用于加载 xml 配置，提供类似 xml 配置中的 </import>。
+额外提及下 `@ImportResource`，同 `@Import` 的使用方式，用于加载 xml 配置，提供类似 xml 中的 </import> 标签。
 
 ```java
 @ImportResource({"classpath*:test/META-INF/example/*.xml"})
 @SpringBootApplication
-public class SpringBootTestApplication {...}
+public class MyApplication {...}
+```
+
+## 排除配置类
+除了使用 EnableAutoConfiguration 和 SpringBootApplication 的 exclude 属性进行排除配置类，还可以通过配置文件指定参数的形式：
+
+properties 文件指定
+```properties
+spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+```
+
+yml 文件指定：
+```yml
+spring:     
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
 ```
 
 ## End
