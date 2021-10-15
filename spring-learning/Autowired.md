@@ -16,8 +16,7 @@
 
 
 ## Ref
-
-https://howtodoinjava.com/spring-core/spring-beans-autowiring-concepts/
+[https://howtodoinjava.com/spring-core/spring-beans-autowiring-concepts/](https://howtodoinjava.com/spring-core/spring-beans-autowiring-concepts/)
 
 
 # 多实例
