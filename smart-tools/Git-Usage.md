@@ -30,6 +30,13 @@
 把暂存区的文件从暂存区撤出，但不会更改文件  
 `git restore --staged <file>`
 
+拉去最新一次提交到暂存区
+`git reset HEAD`
+
+已经commit了从head回退1步
+`git reset --hard HEAD^`  
+`git reset --hard HEAD^1` 
+
 ## 4.重命名文件
 
 `git mv <oldFile> <newFile>`

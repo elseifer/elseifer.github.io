@@ -23,7 +23,7 @@ class  name  should  be  used.  If the -jar option is specified, the first non-o
 name of a JAR archive containing class and resource files for the application, with the startup class
 indicated by the Main-Class manifest header.
 
-java 命令用于发布 Java 应用，它会启动一个 JVM 实例进程，Java 应用在 JVM 中以主线程的形式运行，主线程结束则 JVM 进程终止。而对于 javaagent 程序，它和宿主应用在同一个 JVM 实例上。
+java 命令用于发布 Java 应用，它会启动一个 JVM 实例进程，Java 应用在 JVM 中以主线程的形式运行，主线程结束则 JVM 进程终止，而对于 javaa gent 代理，它和宿主应用在同一个 JVM 实例上。
 
 使用方法：
 ```
@@ -50,6 +50,14 @@ cp 其实就是 classpath，在 linux 中多个jar包用 `:` 分割，代表了�
 
 
 ## -verbose:class
+
+
+# jmap
+dump 指定 pid 的 java 进程，存放在 heap.bin 文件
+`jmap -dump:live,format=b,file=heap.bin [pid]`
+
+分析 heap.bin 文件，启动一个 web server，访问 http://ip:7000 即可查阅
+`jhat -J-mx800m heap.bin`
 
 # REF
 
