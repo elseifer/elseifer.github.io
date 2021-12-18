@@ -66,7 +66,6 @@ git commit 命令将暂存区内容添加到本地仓库中
 
 `git switch` 在 git 2.23 上提供，会代替 `git checkout` 对分支的管理
 
-由于 git
 
 # REF
 [https://git-scm.com/docs/git-switch/2.23.0](https://git-scm.com/docs/git-switch/2.23.0)
