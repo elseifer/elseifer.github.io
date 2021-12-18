@@ -25,9 +25,14 @@ file 指当前项目根目录，classpath 指当前项目的 resources 目录
 
 ### 配置文件生效的优先级
 
-`spring.config.location` > `spring.profiles.active` > `spring.config.additional-location` > 默认的 `application.proerties`
+优先级由高到低：
+- `spring.config.location` 
+- `spring.profiles.active`
+- `spring.config.additional-location`
+- `application-default.proerties`，仅本地环境生效 
+- `application.proerties`
 
-其中通过 `spring.profiles.active` 和 `spring.config.additional-location` 指定的配置文件会与默认 `application.proerties` 合并以作为最终的配置，`spring.config.location` 则不会。
+其中通过 `spring.profiles.active` 和 `spring.config.additional-location` 指定的配置文件会与 `application.proerties` 合并以作为最终的配置，`spring.config.location` 则不会。
 
 ## 激活 profile 几种方法
 
@@ -35,6 +40,7 @@ file 指当前项目根目录，classpath 指当前项目的 resources 目录
 在默认配置文件、`-D`、`system.property` 中指定 `spring.profiles.active=dev`，可以激活 application-dev.properties 配置。
 
 ### @ActiveProfiles
+由 spring-test 提供，
 在测试类上标记 `@ActiveProfiles("dev")` 可以激活 application-dev.properties 配置。
 
 ### @PropertySource

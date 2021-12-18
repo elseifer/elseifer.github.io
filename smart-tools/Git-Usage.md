@@ -30,6 +30,13 @@
 把暂存区的文件从暂存区撤出，但不会更改文件  
 `git restore --staged <file>`
 
+拉去最新一次提交到暂存区
+`git reset HEAD`
+
+已经commit了从head回退1步
+`git reset --hard HEAD^`  
+`git reset --hard HEAD^1` 
+
 ## 4.重命名文件
 
 `git mv <oldFile> <newFile>`
@@ -49,3 +56,16 @@ git commit 命令将暂存区内容添加到本地仓库中
 
 修改最近一次提交的提交信息
 `git commit --amend -m 'amend commit'`
+
+
+## 6. 切换分支
+
+`git checkout <branch>`
+
+`git switch <branch>`
+
+`git switch` 在 git 2.23 上提供，会代替 `git checkout` 对分支的管理
+
+
+# REF
+[https://git-scm.com/docs/git-switch/2.23.0](https://git-scm.com/docs/git-switch/2.23.0)

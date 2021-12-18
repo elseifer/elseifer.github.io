@@ -4,7 +4,7 @@
 一些个人记录，仅供参考。
 
 - golang
-  - [Golang: Getting Started](golang/Getting-started.md)
+  - [Golang: Getting Started](golang/Go-getting-started.md)
   - [Delve: Getting Started](golang/Dlv-learning.md)
   - [Delve: Dlv Design](golang/Dlv-design.md)
   - [Delve: Code Reading](golang/Dlv-Code-Reading.md)

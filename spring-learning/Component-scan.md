@@ -1,11 +1,11 @@
 
-# SpringBoot 组件扫描
-为了实现依赖项注入，Spring 创建了 application context（应用上下文）。
-启动过程中，Spring 实例化对象并将其添加到应用上下文中，应用上下文中的对象称为 Spring beans 或 components。
-Spring 解析 beans 之间的依赖关系，并将 beans 注入到其他 beans 的字段或构造函数中。
-在类路径中搜索配置类的过程称为组件扫描<sup>[1]</sup>。
+# Spring 组件扫描
+为了实现依赖项注入，Spring 创建了 application context（应用上下文）  
+启动过程中，Spring 实例化对象并将其添加到应用上下文中，应用上下文中的对象称为 Spring beans 或 components  
+Spring 解析 beans 之间的依赖关系，并将 beans 注入到其他 beans 的字段或构造函数中  
+在类路径中搜索配置类的过程称为组件扫描<sup>[1]</sup>  
 
-SpringBoot2 基于 Spring5。
+SpringBoot2 基于 Spring5 核心包，这里我们以 SpringBoot2 为例。
 
 ## @Component 注解
 `@Component` 注解的类是 Spring 配置类，为了说明 Spring Boot 的组件扫描（component scan），先从 `@Component` 说起。 
@@ -28,6 +28,8 @@ e.g. the {@link Repository @Repository} annotation or AspectJ's
 
 `@Component`、`Repository` 、`Service` 和 `Controller` 均是由 `org.springframework.context.annotation.ClassPathBeanDefinitionScanner` 处理。
 
+[what-is-a-spring-stereotype](https://stackoverflow.com/questions/14756486/what-is-a-spring-stereotype)
+
 ## Bean 名称
 工具类 AnnotationBeanNameGenerator 作为名字生成器，如果不指定 `@Component` 的 value 属性，默认 bean name 为短类名，详见 `java.beans.Introspector#decapitalize`，例如
 
@@ -44,10 +46,6 @@ e.g. the {@link Repository @Repository} annotation or AspectJ's
 ### bean 重复加载
 
 如果需要允许 bean 重复加载，可以在 properties 中添加 `spring.main.allow-bean-definition-overriding=true` 配置
-
-### 理解 stereotype 
-
-[what-is-a-spring-stereotype](https://stackoverflow.com/questions/14756486/what-is-a-spring-stereotype)
 
 ## Auto-detection
 
@@ -81,11 +79,11 @@ public @interface EnableAutoConfiguration {
 }
 ```
 
-其中最重要的是 `@Import(AutoConfigurationImportSelector.class)` 注解，借助 `AutoConfigurationImportSelector`，`@EnableAutoConfiguration` 帮助 Spring Boot 应用将所有符合条件的 `@Configuration` 配置加载到当前IoC容器中。
+其中 `@Import(AutoConfigurationImportSelector.class)` 很重要，通过 `AutoConfigurationImportSelector`，`@EnableAutoConfiguration` 把 Spring Boot 应用所有符合条件的 `@Configuration` 配置加载到当前IoC容器中。
 
- AutoConfigurationImportSelector 借助 Spring 的工具类 `SpringFactoriesLoader` 加载了 `META-INF/spring.factories` 配置。
+`AutoConfigurationImportSelector` 借助 Spring 的工具类 `SpringFactoriesLoader` 加载了 `META-INF/spring.factories` 配置。
  
- `spring.factories` 文件是一个典型的 properties 配置文件，格式仍然是 `Key=Value` 的形式，不过 Key 和 Value 均是 Java 的全限定类名，比如：`org.springframework.data.repository.core.support.RepositoryFactorySupport=org.springframework.data.jpa.repository.support.JpaRepositoryFactory`。
+`spring.factories` 是一个 properties 配置文件，格式是 `Key=Value` 形式，Key 和 Value 均是 Java 的全限定类名，比如：`org.springframework.data.repository.core.support.RepositoryFactorySupport=org.springframework.data.jpa.repository.support.JpaRepositoryFactory`
 
 # REF
 1.[spring-component-scanning](https://reflectoring.io/spring-component-scanning/)
