@@ -11,13 +11,14 @@ WebApplicationContext 接口：为了在 Web 环境使用而设计，WebApplicat
 # Bean 的生命周期
 
 1. bean 的初始化
-    
-    1) 调用一系列的 aware 接口；
-    2) 执行 BeanPostProcessor 的 postProcessBeforeInitialization方法；
-    3) Bean 实现了 InitializingBean 接口，则执行 afterPropertiesSet 方法；
-    4) 在 BeanDefinition 中通过 init-method 属性指定了初始化方法，则执行（注意该方法如果和 afterPropertiesSet 同名则不执行，如果 afterPropertiesSet 抛出异常时 init-method 也会不执行）
-    5) 执行 BeanPostProcessor 的 postProcessAfterInitialization方法；
-    
+
+以下任何阶段出现异常则提前终止 bean 初始化：
+1. 调用一系列的 aware 接口；
+2. 执行 BeanPostProcessor 的 postProcessBeforeInitialization方法；
+3. Bean 实现了 InitializingBean 接口，则执行 afterPropertiesSet 方法；
+4. 在 BeanDefinition 中通过 init-method 属性指定了初始化方法，则执行（如果该方法和 afterPropertiesSet 同名则不执行）
+5. 执行 BeanPostProcessor 的 postProcessAfterInitialization方法；
+
 ![流程图](images/init.png)
 
 2. aware 接口

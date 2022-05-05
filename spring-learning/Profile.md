@@ -47,7 +47,7 @@ file 指当前项目根目录，classpath 指当前项目的 resources 目录
 在 Spring 配置类上标记 `@PropertySource("classpath:application-test.properties")` 可以激活 application-test.properties 配置。
 
 ### @TestPropertySource
-只用于测试，在 Spring 配置类上标记 `@TestPropertySource("classpath:application-test.properties")` 可以激活 application-test.properties 配置。
+由 spring-test 提供，只用于测试，在 Spring 配置类上标记 `@TestPropertySource("classpath:application-test.properties")` 可以激活 application-test.properties 配置。
 
 ## Profile 注解
 
