@@ -159,7 +159,7 @@ public class MyApplication {}
 
 ### 方式1：spring.factories
 
-一种类似 spi 方式来引入配置类：spring.factories，该文件位于 classpatch:META-INF 目录中，里面的内容如下：
+一种类似 spi 方式来引入配置类：`spring.factories`，该文件位于 `classpatch:META-INF` 目录中，里面的内容如下：
 
 ```properties
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
@@ -168,7 +168,8 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 org.springframework.context.ApplicationContextInitializer=\
   org.springframework.boot.context.ContextIdApplicationContextInitializer
 ``` 
-它不单单可以指定配置类，还可以指定其他 Spring 提供的扩展类，例如 ApplicationContextInitializer 等等。
+
+作为 Spring 的 SPI 机制，`spring.factories` 不仅可以指定配置类，还可以配置其他的 Spring 扩展类，例如 ApplicationContextInitializer 的实现 ContextIdApplicationContextInitializer 。
 
 ### 方式2：@Import
 

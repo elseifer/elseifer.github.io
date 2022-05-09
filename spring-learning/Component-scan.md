@@ -79,9 +79,12 @@ public @interface EnableAutoConfiguration {
 }
 ```
 
-其中 `@Import(AutoConfigurationImportSelector.class)` 很重要，通过 `AutoConfigurationImportSelector`，`@EnableAutoConfiguration` 把 Spring Boot 应用所有符合条件的 `@Configuration` 配置加载到当前IoC容器中。
+其中 `@Import(AutoConfigurationImportSelector.class)` 很重要，通过 `AutoConfigurationImportSelector`，`@EnableAutoConfiguration` 把 SpringBoot 应用代码路径下所有符合条件的[配置类](./Configuration.md)加载到当前IoC容器中。
 
-`AutoConfigurationImportSelector` 借助 Spring 的工具类 `SpringFactoriesLoader` 加载了 `META-INF/spring.factories` 配置。
+`AutoConfigurationImportSelector` 调用工具类 `SpringFactoriesLoader` 读取 `META-INF/spring.factories` 配置，告诉 spring 有哪些配置类需要加载。
+调用 `AutoConfigurationMetadataLoader` 工具类读取 `META-INF/spring-autoconfigure-metadata.properties` 声明对应配置类需要自动装配的条件。
+
+`exclude`、`excludeName` 排除指定的 auto-configuration 类（通过 `EnableAutoConfiguration` 或者 `/spring.factories`），注意不是配置类。
  
 `spring.factories` 是一个 properties 配置文件，格式是 `Key=Value` 形式，Key 和 Value 均是 Java 的全限定类名，比如：`org.springframework.data.repository.core.support.RepositoryFactorySupport=org.springframework.data.jpa.repository.support.JpaRepositoryFactory`
 
