@@ -30,7 +30,7 @@ cover.out 的可视化效果很差
 2. 转为 html 格式<sup>[2]</sup>: `go tool cover -html=cover.out -o cover.html` 
 
 同理如果使用 gocover-cobertura 等第三方 xml 格式的覆盖率报告，也是需要源代码目录。
-普通执行 `go test -coverpak ./... -coverprofile cover.out` 得出的 covert.out 不同，这里 covert.out 不是在 demo 源码下生成的，所以 cover.out 的每行是一个go文件相对 `$GOPATH/src` 的路径，需要我们用 sed 修改每行，将路径修改为相对 `$GOPATH/src/${PROJECT_NAME}` 的路径。
+与普通执行 `go test -coverpak ./... -coverprofile cover.out` 得出的 covert.out 不同，这里 covert.out 不是在 demo 源码下生成的，所以 cover.out 的每行是一个go文件相对 `$GOPATH/src` 的路径，需要我们用 sed 修改每行，将路径修改为相对 `$GOPATH/src/${PROJECT_NAME}` 的路径。
 
 # REF
 1.[https://www.elastic.co/cn/blog/code-coverage-for-your-golang-system-tests](https://www.elastic.co/cn/blog/code-coverage-for-your-golang-system-tests)

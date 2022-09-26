@@ -181,7 +181,7 @@ org.springframework.context.ApplicationContextInitializer=\
 public class MyApplication {...}
 ```
 
-额外提及下 `@ImportResource`，同 `@Import` 使用方式，用于加载 xml 配置，提供类似 xml 中的 `<import/>` 标签。
+额外提及下 `@ImportResource`，它的使用方式同 `@Import` 注解，用于加载 xml 配置，提供类似 xml 中的 `<import/>` 标签。
 
 ```java
 @ImportResource({"classpath*:test/META-INF/example/*.xml"})
