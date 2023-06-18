@@ -8,7 +8,7 @@
 
 ### 什么是 Spring 配置类
 
-Spring 配置类用来注册 bean，它效果与 xml 文件是一样的，只是创建 Spring IoC 容器的方式不同：
+Spring 配置类用来注册 bean，这与 xml 文件类似，只是创建 Spring IoC 容器的方式不同：
 ```java
 //通过xml文件创建springIOC容器
 ApplicationContext applicationContext = new ClassPathXmlApplicationContext("/spring-beans.xml");
