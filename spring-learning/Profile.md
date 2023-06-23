@@ -1,16 +1,16 @@
 # Spring Profile 机制
 
 ## 默认加载顺序
-SpringBoot 启动会扫描以下位置的 application.properties/yml 文件作为
-默认配置文件：
+SpringBoot 启动会扫描以下位置的 application.properties/yml 文件（file 指当前项目的根目录，classpath 指当前项目的 resources 目录
+）作为默认配置文件：
 - file:./config/
 - file:./
 - classpath:/config/
 - classpath:/
 
-以上是按照优先级从高到低的顺序，所有位置的文件都会被加载，高优先级配置内容会覆盖低优先级配置的内容，并形成互补配置。我们也可以通过 `spring.config.location` 来改变默认配置。
+以上是按照优先级从高到低的顺序，所有位置的文件都会被加载，高优先级配置内容会覆盖低优先级配置的内容，并形成互补配置。
 
-file 指当前项目根目录，classpath 指当前项目的 resources 目录
+用户可以通过 `spring.config.location` 来改变这一默认行为。
 
 ## 外化配置 
 
